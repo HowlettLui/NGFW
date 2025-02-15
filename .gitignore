@@ -27,3 +27,6 @@ replay_pid*
 # folder
 /target
 /webapp
+
+# vs code 
+.vscode
