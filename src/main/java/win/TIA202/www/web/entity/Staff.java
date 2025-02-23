@@ -2,33 +2,39 @@ package win.TIA202.www.web.entity;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import win.TIA202.www.core.pojo.CoreMsg;
 
-//@Entity
+@Entity
 public class Staff extends CoreMsg {
 	private static final long serialVersionUID = 1L;
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@Column(name = "STAFF_ID")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "STAFF_ID")
 	private Integer staffId;
-//	@Column(name = "STAFF_ACCOUNT")
+	@Column(name = "STAFF_ACCOUNT")
 	private String staffAccount;
-//	@Column(name = "STAFF_PASSWORD")
+	@Column(name = "STAFF_PASSWORD")
 	private String staffPassword;
-//	@Column(name = "STAFF_NAME")
+	@Column(name = "STAFF_NAME")
 	private String staffName;
-//	@Column(name = "STAFF_EMAIL")
+	@Column(name = "STAFF_EMAIL")
 	private String staffEmail;
-//	@Column(name = "STAFF_PHONE")
+	@Column(name = "STAFF_PHONE")
 	private String staffPhone;
-//	@Column(name = "STAFF_STATUS", insertable = false)
+	@Column(name = "STAFF_STATUS", insertable = false)
 	private Boolean staffStatus;
 //	@ManyToOne
 //	@JoinColumn(name = "STAFF_ROLE_ID", insertable = false, updatable = false)
-//	@Column(name = "STAFF_ROLE_ID")
+	@Column(name = "STAFF_ROLE_ID")
 	private Integer staffRoleId;
 	private String sso;
-//	@Column(name = "CREATE_TIME", insertable = false)
+	@Column(name = "CREATE_TIME", insertable = false)
 	private Timestamp createTime;
 
 	public Staff() {

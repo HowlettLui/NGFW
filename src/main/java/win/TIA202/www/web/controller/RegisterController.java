@@ -2,7 +2,6 @@ package win.TIA202.www.web.controller;
 
 import java.io.IOException;
 
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,11 +25,7 @@ public class RegisterController extends HttpServlet  {
 	
 	@Override
 	public void init() throws ServletException {
-		try {
-			service = new UserServiceImpl();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+		service = new UserServiceImpl();
 	}
 	
 //	@PostMapping
