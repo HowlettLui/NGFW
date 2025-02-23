@@ -17,8 +17,11 @@ import win.TIA202.www.web.service.UserService;
 import win.TIA202.www.web.service.impl.UserServiceImpl;
 
 @WebServlet("/register")
-public class registerController extends HttpServlet {
+//@Controller
+//@RequestMapping("register")
+public class RegisterController extends HttpServlet  {
 	private static final long serialVersionUID = 1L;
+	//	@Autowired
 	private UserService service;
 	
 	@Override
@@ -30,18 +33,22 @@ public class registerController extends HttpServlet {
 		}
 	}
 	
+//	@PostMapping
+//	@ResponseBody
+//	public User register(@RequestBody User user) {
+//		if (user == null) {
+//			user = new User();
+//			user.setMessage("無會員資訊");
+//			user.setSuccessfully(false);
+//			return user;
+//		}
+//
+//		user = service.register(user);
+//		return user;
+//	}
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		String account = req.getParameter("account");
-//		String email = req.getParameter("email");
-//		String password = req.getParameter("password");
-//		String comfirmPassword = req.getParameter("comfirmPassword");
-//		User user = new User();
-//		user.setAccount(account);
-//		user.setEmail(email);
-//		user.setPassword(password);
-//		user.setConfirmPassword(comfirmPassword);
-		
 		Gson gson = new Gson();
 		User user = gson.fromJson(req.getReader(), User.class);
 		

@@ -1,91 +1,134 @@
 package win.TIA202.www.web.service.impl;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.naming.NamingException;
 
-import win.TIA202.www.web.dao.CheckEmailDao;
 import win.TIA202.www.web.dao.UserDao;
-import win.TIA202.www.web.dao.impl.CheckEmailDaoImpl;
 import win.TIA202.www.web.dao.impl.UserDaoImpl;
 import win.TIA202.www.web.entity.User;
 import win.TIA202.www.web.service.UserService;
 
+//@Service
+//@Transactional
 public class UserServiceImpl implements UserService {
+//	@Autowired
 	private UserDao userDao;
-	private CheckEmailDao checkEmailDao;
-	
+
 	public UserServiceImpl() throws NamingException {
 		userDao = new UserDaoImpl();
-		checkEmailDao = new CheckEmailDaoImpl();
 	}
 
 	@Override
 	public String register(User user) {
 		// 資料審查
-		try {
-			if (checkEmailDao.checkUserEmail(user).getUserId() > 0) {
-				return "此帳號已被註冊";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+//		try {
+//			if (checkEmailDao.checkUserEmail(user).getUserId() > 0) {
+//				return "此帳號已被註冊";
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+
+		// 資料檢核 or 資料審查
 		String account = user.getAccount();
-		if (account == null) {
-			return "請輸入使用者名稱";
+		String password = user.getPassword();
+		
+		if (userDao.selectByAccount(account) != null) {
+			return "此使用者名稱已被註冊";
 		}
 
-		if (account.length() < 5 || account.length() > 30) {
+//		if (userDao.selectByEmail(user.getEmail()) != null) {
+//			user.setMessage("此電子信箱已被註冊");
+//			user.setSuccessfully(false);
+//			return "此電子信箱已被註冊";
+//		}
+		
+		if (account == null || account.length() < 5 || account.length() > 30) {
 			return "使用者名稱長度請介於 5 ~ 30 之間";
 		}
 
-		String password = user.getPassword();
 		if (password == null || password.length() < 6 || password.length() > 12) {
 			return "密碼長度需介於 6 ~ 12 之間";
 		}
 
-		if (Objects.equals(password, user.getConfirmPassword())) {
+		if (!Objects.equals(password, user.getPassword())) {
 			return "密碼與確認密碼不符";
 		}
 
 		int resultConut = userDao.insert(user);
 
 		return resultConut > 0 ? null : "發生錯誤，請聯絡客服";
-	}
-
-	@Override
-	public User edit(User user) {
-		// TODO Auto-generated method stub
-		return null;
+// -----------------------------------------------------------------------------------------------		
+//		if (user.getName() == null) {
+//			user.setMessage("使用者名稱未輸入");
+//			user.setSuccessfully(false);
+//			return user;
+//		}
+//
+//		if (user.getPassword() == null) {
+//			user.setMessage("密碼未輸入");
+//			user.setSuccessfully(false);
+//			return user;
+//		}
+//
+//		if (user.getEmail() == null) {
+//			user.setMessage("電子信箱未輸入");
+//			user.setSuccessfully(false);
+//			return user;
+//		}
+//
+//		try {
+//			if (userDao.selectByEmail(user.getEmail()) != null) {
+//				user.setMessage("此電子信箱已被註冊");
+//				user.setSuccessfully(false);
+//				return user;
+//			}
+//
+//			user.setRoleId(2);
+//			final int resultCount = userDao.insert(user);
+//			if (resultCount < 1) {
+//				user.setMessage("註冊錯誤，請聯絡管理員!");
+//				user.setSuccessfully(false);
+//				return user;
+//			}
+//
+//			user.setMessage("註冊成功");
+//			user.setSuccessfully(true);
+//			return user;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			user.setMessage("註冊錯誤，請聯絡客服");
+//			user.setSuccessfully(false);
+//			return user;
+//		}
 	}
 
 	@Override
 	public User login(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean removeById(Integer user_id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override	// 檢查email有無被註冊
-	public boolean selectByEmail(User user) {
-		String email = user.getEmail();
-		if (email == null) {
-			return true;
+		final String email = user.getEmail();
+		final String password = user.getPassword();
+		
+		if (email == null || email.isEmpty()) {
+			user.setSuccessfully(false);
+			user.setMessage("請輸入電子信箱");
+			return user;
 		}
-		return false;
+
+		if (password == null || password.isEmpty()) {
+			user.setSuccessfully(false);
+			user.setMessage("請輸入密碼");
+			return user;
+		}
+		user = userDao.selectForLogin(email, password);
+		if (user == null) {
+			user = new User();
+			user.setMessage("電子信箱或密碼錯誤");
+			user.setSuccessfully(false);
+			return user;
+		}
+		user.setMessage("登入成功");
+		user.setSuccessfully(true);
+		return user;
 	}
 }

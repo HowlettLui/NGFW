@@ -2,7 +2,7 @@ package win.TIA202.www.web.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.List;
+import java.sql.ResultSet;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -11,32 +11,18 @@ import javax.sql.DataSource;
 import win.TIA202.www.web.dao.UserDao;
 import win.TIA202.www.web.entity.User;
 
+//@Repository
 public class UserDaoImpl implements UserDao {
+//	@PersistenceContext
+//	private Session session;
 	private DataSource ds;
 
 	public UserDaoImpl() throws NamingException {
 		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
 	}
-
+	
 	@Override
 	public int insert(User user) {
-		// selectIdByEmail
-//		String checkEmailSql = "SELECT user_id from `USER` where EMAIL = ? ";
-//		try (
-//			Connection conn = ds.getConnection(); 
-//			PreparedStatement pstmt = conn.prepareStatement(checkEmailSql);
-//		){
-//			pstmt.setString(1, user.getEmail());
-//			return pstmt.executeUpdate();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return -1;
-		
-//		if (condition) {
-//
-//		}		// 此段在檢查email是否已被註冊
-
 		String sql = "insert into `USER`(ACCOUNT, EMAIL, NAME, PASSWORD, PHONE, STATUS, ROLE_ID, OAUTH) values (? ,? ,'SYSTEM' ,? ,'SYSTEM' ,0 ,12 ,? )"; // !!測試暫時使用oauth欄位裝 confirmPassword																																						// !!
 		try (
 			Connection conn = ds.getConnection(); 
@@ -51,35 +37,69 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 		}
 		return -1;
+//		
+//		session.persist(user);
+//		return -1;
 	}
 
 	@Override
-	public int delectById(Integer user_id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int update(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+	public User selectForLogin(String email, String password) {
+		String sql = "select * from `USER` where EMAIL = ? and PASSWORD = ?";	
+		try (
+			Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			try(ResultSet rs = pstmt.executeQuery()){
+				if (rs.next()) {
+					User user = new User();
+					user.setUserId(rs.getInt("USER_ID"));
+					user.setAccount(rs.getString("ACCOUNT"));
+					user.setPassword(rs.getString("PASSWORD"));
+//					user.setConfirmPassword(rs.getString("CONFIRMPASSWORD"));
+					user.setName(rs.getString("NAME"));
+					user.setEmail(rs.getString("EMAIL"));
+					user.setPhone(rs.getString("PHONE"));
+					user.setStatus(rs.getBoolean("STATUS"));
+					user.setRoleId(rs.getInt("ROLE_ID"));
+					user.setOauth(rs.getString("OAUTH"));
+					user.setCreateTime(rs.getTimestamp("CREATE_TIME"));
+					return user;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public User selectByAccount(String account) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public User selectByAccountAndPassword(User user) {
-		// TODO for login
-		return null;
-	}
-
-	@Override
-	public List<User> selectAll() {
-		// TODO Auto-generated method stub
+		String sql = "select * from `USER` where ACCOUNT = ?";	
+		try (
+			Connection conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+		){
+			pstmt.setString(1, account);
+			try(ResultSet rs = pstmt.executeQuery()){
+				if (rs.next()) {
+					User user = new User();
+					user.setUserId(rs.getInt("USER_ID"));
+					user.setPassword(rs.getString("PASSWORD"));
+					user.setName(rs.getString("NAME"));
+					user.setEmail(rs.getString("EMAIL"));
+					user.setPhone(rs.getString("PHONE"));
+					user.setStatus(rs.getBoolean("STATUS"));
+					user.setRoleId(rs.getInt("ROLE_ID"));
+					user.setOauth(rs.getString("OAUTH"));
+					user.setCreateTime(rs.getTimestamp("CREATE_TIME"));
+					return user;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 }

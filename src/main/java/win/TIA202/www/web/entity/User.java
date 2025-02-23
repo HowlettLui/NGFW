@@ -4,36 +4,48 @@ import java.sql.Timestamp;
 
 import win.TIA202.www.core.pojo.CoreMsg;
 
+//@Entity
+//@Table(name = "USER")
+//@Setter
+//@Getter
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class User extends CoreMsg {
+	private static final long serialVersionUID = 1L;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name = "USER_ID")
 	private Integer userId; // Corresponds to USER_ID (auto-incremented)
 	private String account; // Corresponds to ACCOUNT，use on register & login
 	private String password; // Corresponds to PASSWORD
-	private String confirmPassword;	// Corresponds to CONFIRMPASSWORD
 	private String name; // Corresponds to NAME，use on Estore
 	private String email; // Corresponds to EMAIL
 	private String phone; // Corresponds to PHONE
 	private Boolean status; // Corresponds to STATUS (Account active status)
+//	@Column(name = "ROLE_ID")
 	private Integer roleId;
+	private String confirmPassword;
 	private String oauth;
-	private Timestamp createdTime; // Corresponds to CREATED_DATE (Timestamp of creation)
+//	@Column(name = "CREATE_TIME", insertable = false)
+	private Timestamp createTime; // Corresponds to CREATE_DATE (Timestamp of creation)
 
 //	預設建構子
 	public User() {
-		this.name = "SYSTEM";	// !! 暫時插入SYSTEM ，規避DB NO NULL限制 !!
+		this.name = "SYSTEM"; // !! 暫時插入SYSTEM ，規避DB NO NULL限制 !!
 		this.status = false;
 		this.roleId = 12;
 //		this.oauth = null; // !! 暫時測試使用oauth欄位裝 confirmPassword !!
-		this.createdTime = new Timestamp(System.currentTimeMillis());
+		this.createTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public Integer getUserId() {
 		return userId;
 	}
-	
+
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	
+
 	public String getAccount() {
 		return account;
 	}
@@ -48,14 +60,6 @@ public class User extends CoreMsg {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
 	}
 
 	public String getName() {
@@ -98,6 +102,14 @@ public class User extends CoreMsg {
 		this.roleId = roleId;
 	}
 
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
 	public String getOauth() {
 		return oauth;
 	}
@@ -106,12 +118,12 @@ public class User extends CoreMsg {
 		this.oauth = oauth;
 	}
 
-	public Timestamp getCreatedTime() {
-		return createdTime;
+	public Timestamp getCreateTime() {
+		return createTime;
 	}
 
-	public void setCreatedTime(Timestamp createdTime) {
-		this.createdTime = createdTime;
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
 	}
 
 }
