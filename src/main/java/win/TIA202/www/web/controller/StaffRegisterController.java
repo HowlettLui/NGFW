@@ -2,19 +2,20 @@ package win.TIA202.www.web.controller;
 
 import java.io.IOException;
 
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import win.TIA202.www.web.entity.Staff;
 import win.TIA202.www.web.service.StaffInitService;
-import win.TIA202.www.web.service.impl.StaffInitServiceImpl;
 
 @WebServlet("/staff_register")
 public class StaffRegisterController extends HttpServlet {
@@ -23,11 +24,8 @@ public class StaffRegisterController extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		try {
-			service = new StaffInitServiceImpl();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        service = context.getBean(StaffInitService.class);
 	}
 
 	@Override

@@ -2,22 +2,25 @@ package win.TIA202.www.web.service.impl;
 
 import java.util.Objects;
 
-import javax.naming.NamingException;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import win.TIA202.www.web.dao.UserDao;
-import win.TIA202.www.web.dao.impl.UserDaoImpl;
 import win.TIA202.www.web.entity.User;
 import win.TIA202.www.web.service.UserService;
 
-//@Service
-//@Transactional
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
-//	@Autowired
+	@Autowired
 	private UserDao userDao;
 
-	public UserServiceImpl() throws NamingException {
-		userDao = new UserDaoImpl();
-	}
+//	public UserServiceImpl() throws NamingException {
+//		userDao = new UserDaoImpl();
+//	}
 
 	@Override
 	public String register(User user) {
@@ -34,9 +37,9 @@ public class UserServiceImpl implements UserService {
 		String account = user.getAccount();
 		String password = user.getPassword();
 		
-		if (userDao.selectByAccount(account) != null) {
-			return "此使用者名稱已被註冊";
-		}
+//		if (userDao.selectByAccount(account) != null) {
+//			return "此使用者名稱已被註冊";
+//		}
 
 //		if (userDao.selectByEmail(user.getEmail()) != null) {
 //			user.setMessage("此電子信箱已被註冊");
