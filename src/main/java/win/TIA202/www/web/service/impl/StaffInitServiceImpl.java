@@ -1,21 +1,24 @@
 package win.TIA202.www.web.service.impl;
 
-import javax.naming.NamingException;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import win.TIA202.www.web.dao.StaffInitDao;
-import win.TIA202.www.web.dao.impl.StaffInitDaoImpl;
 import win.TIA202.www.web.entity.Staff;
 import win.TIA202.www.web.service.StaffInitService;
 
-//@Service
-//@Transactional
+@Service
+@Transactional
 public class StaffInitServiceImpl implements StaffInitService {
-//	@Autowired
+	@Autowired
 	private StaffInitDao staffInitDao;
 
-	public StaffInitServiceImpl() throws NamingException {
-		staffInitDao = new StaffInitDaoImpl();
-	}
+//	public StaffInitServiceImpl() throws NamingException {
+//		staffInitDao = new StaffInitDaoImpl();
+//	}
 
 	@Override
 	public String staffRegister(Staff staff) {
