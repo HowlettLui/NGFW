@@ -28,15 +28,24 @@ public class AddItemController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Gson gson = new Gson();
 
-        ItemFromAddReq itemFromAddReq = gson.fromJson(req.getReader(), ItemFromAddReq.class);
+        ItemFromAddReq itemFromAddReq = null;
+        try {
+            itemFromAddReq = gson.fromJson(req.getReader(), ItemFromAddReq.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         ItemModel itemModel = itemFromAddReq.getItemModel();
         Item item = itemFromAddReq.getItem();
         ItemInfo itemInfo = itemFromAddReq.getItemInfo();
 
-        resp.getWriter().write(service.addNewItem(itemModel, item, itemInfo));
+        try {
+            resp.getWriter().write(service.addNewItem(itemModel, item, itemInfo));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

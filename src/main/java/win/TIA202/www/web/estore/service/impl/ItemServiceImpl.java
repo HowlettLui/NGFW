@@ -19,7 +19,7 @@ public class ItemServiceImpl implements ItemService {
     private ItemDao dao;
 
     @Override
-    public Item showById(Integer id) {
+    public Item pickById(Integer id) {
         return dao.selectItemById(id);
     }
 
@@ -34,7 +34,6 @@ public class ItemServiceImpl implements ItemService {
         boolean itemExist = dao.selectItemByItemName(item.getItemName()) != null;
         boolean itemInfoExist = dao.selectItemInfoBySizeAndColor(itemInfo) != null;
 
-
         try {
             if (itemModelExist && itemExist && itemInfoExist) {
                 return "該商品型號規格已存在，新增商品規格失敗";
@@ -48,13 +47,23 @@ public class ItemServiceImpl implements ItemService {
             Integer itemId = dao.addItem(item);
 
             itemInfo.setItemId(itemId);
-            itemInfo.setItemStatus("已上架");
+            itemInfo.setItemStatus("未上架");
             itemInfo.setStaffId(1);
             dao.addItemInfo(itemInfo);
 
             return "新增商品成功";
         } catch (Exception e) {
             return "新增商品失敗: " + e.getMessage();
+        }
+    }
+
+    @Override
+    public List<ItemInfo> findInfoByItemId(Integer itemId) {
+        try {
+            return dao.selectItemInfoByItemId(itemId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
