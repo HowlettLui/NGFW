@@ -2,8 +2,12 @@ package win.TIA202.www.web.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -50,14 +54,15 @@ public class articleAddController extends HttpServlet {
 		String mainTitle = req.getParameter("maintitle");
 		String subTitle = req.getParameter("subtitle");
 		String content = req.getParameter("summernote");
-//		String pDate = req.getParameter("publishDate");
-//		LocalDate publishDate = LocalDate.parse(pDate);
+		String pDate = req.getParameter("publishDate");
+		pDate = pDate + " 00:00:00";
+		Timestamp publishDate = Timestamp.valueOf(pDate);
 		
 		Article article = new Article();
 		article.setMainTitle(mainTitle);
 		article.setSubTitle(subTitle);
 		article.setContent(content);
-//		article.setPublishDate(publishDate);
+		article.setPublishDate(publishDate);
 
 		
 //		Gson gson = new Gson();

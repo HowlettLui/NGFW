@@ -14,7 +14,7 @@ public class Article extends CoreMsg {
 	private String mainTitle;
 	private String subTitle;
 	private String content;
-	private LocalDate publishDate;
+	private Timestamp publishDate;
 	private Boolean status;
 	private String articleType;
 	private Timestamp createdTime; // Corresponds to CREATED_DATE (Timestamp of creation)
@@ -83,11 +83,11 @@ public class Article extends CoreMsg {
 		this.content = content;
 	}
 	
-	public LocalDate getPublishDate() {
+	public Timestamp getPublishDate() {
 		return publishDate;
 	}
 
-	public void setPublishDate(LocalDate publishDate) {
+	public void setPublishDate(Timestamp publishDate) {
 		this.publishDate = publishDate;
 	}
 

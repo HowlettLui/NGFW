@@ -24,7 +24,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public int add(Article article) {
 
-		String sql = "insert into article (user_id,staff_id,maintitle,subtitle,content,status,article_type) value(?,?,?,?,?,?,?)";																																					// !!
+		String sql = "insert into article (user_id,staff_id,maintitle,subtitle,content,publish_date,status,article_type) value(?,?,?,?,?,?,?,?)";																																					// !!
 		try (
 //			Connection conn = ds.getConnection();
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGFW_DB","root","123456");
@@ -36,8 +36,9 @@ public class ArticleDaoImpl implements ArticleDao {
 			pstmt.setString(4, article.getSubTitle());
 			pstmt.setString(5, article.getContent());
 //			pstmt.setTimestamp(6,Timestamp.valueOf(article.getPublishDate()) );
-			pstmt.setBoolean(6, article.getStatus());
-			pstmt.setString(7, article.getArticleType());
+			pstmt.setTimestamp(6, article.getPublishDate());
+			pstmt.setBoolean(7, article.getStatus());
+			pstmt.setString(8, article.getArticleType());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
