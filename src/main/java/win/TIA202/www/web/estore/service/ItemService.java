@@ -12,7 +12,7 @@ public interface ItemService {
 
     List<Item> showAllOnShop();
 
-    String addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo);
+    ItemInfo addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo);
 
     List<ItemInfo> findInfoByItemId(Integer itemId);
 }

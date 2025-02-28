@@ -3,16 +3,16 @@ package win.TIA202.www.web.estore.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import win.TIA202.www.core.pojo.ItemCore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Item implements Serializable {
+public class Item extends ItemCore {
 
     private static final long serialVersionUID = -2810428982156732237L;
 
