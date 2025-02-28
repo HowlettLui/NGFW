@@ -1,16 +1,11 @@
 package win.TIA202.www.web.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import win.TIA202.www.web.dao.UserDao;
-import win.TIA202.www.web.entity.Staff;
 import win.TIA202.www.web.entity.User;
 
 @Repository

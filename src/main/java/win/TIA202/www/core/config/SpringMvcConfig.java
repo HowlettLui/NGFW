@@ -1,7 +1,5 @@
 package win.TIA202.www.core.config;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +11,16 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @Configuration
 @EnableWebMvc
-@ComponentScan("win.TIA202.www.web.team.controller")
+@ComponentScan({"win.TIA202.www.web.team.controller", "win.TIA202.www.web.*.controller", "win.TIA202.www.web.controller"})
 public class SpringMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**").addResourceLocations("/WEB-INF/");
+        registry.addResourceHandler("/**").addResourceLocations("");
     }
 
     @Bean

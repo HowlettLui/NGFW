@@ -42,8 +42,9 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public ItemInfo selectItemInfoBySizeAndColor(ItemInfo itemInfo) {
-        String hql = "from ItemInfo where itemSize = :itemSize and itemColor = :color";
+        String hql = "from ItemInfo where itemId = :itemId and itemSize = :itemSize and itemColor = :color";
         Query<ItemInfo> query = session.createQuery(hql, ItemInfo.class);
+        query.setParameter("itemId", itemInfo.getItemId());
         query.setParameter("itemSize", itemInfo.getItemSize());
         query.setParameter("color", itemInfo.getItemColor());
 
@@ -74,5 +75,14 @@ public class ItemDaoImpl implements ItemDao {
     public Integer addItemInfo(ItemInfo itemInfo) {
         session.persist(itemInfo);
         return itemInfo.getItemInfoId();
+    }
+
+    @Override
+    public List<ItemInfo> selectItemInfoByItemId(Integer itemId) {
+        String hql = "from ItemInfo where itemId = :itemId";
+        Query<ItemInfo> query = session.createQuery(hql, ItemInfo.class);
+        query.setParameter("itemId", itemId);
+
+        return query.getResultList();
     }
 }

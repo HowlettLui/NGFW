@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan({"win.TIA202.www.web.*.*.impl", "win.TIA202.www.web.*.impl", "win.TIA202.www.core.aspect"})
+@ComponentScan({"win.TIA202.www.web.*.*.impl", "win.TIA202.www.web.*.impl"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class SpringConfig {
