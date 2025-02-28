@@ -1,11 +1,12 @@
 package win.TIA202.www.web.estore.entity;
 
-import java.io.Serializable;
+import win.TIA202.www.core.pojo.ItemCore;
+
 import java.sql.Timestamp;
 import java.util.List;
 
 
-public class ItemIWOFramework implements Serializable {
+public class ItemIWOFramework extends ItemCore {
 
     private static final long serialVersionUID = 4869794888532867324L;
 
