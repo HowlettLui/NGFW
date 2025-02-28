@@ -3,30 +3,32 @@ package win.TIA202.www.web.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import win.TIA202.www.web.entity.User;
 import win.TIA202.www.web.service.UserService;
-import win.TIA202.www.web.service.impl.UserServiceImpl;
 
-@WebServlet("/register")
-//@Controller
-//@RequestMapping("register")
+//@WebServlet("/register")
+@Controller
+@RequestMapping("register")
 public class RegisterController extends HttpServlet  {
 	private static final long serialVersionUID = 1L;
-	//	@Autowired
+	@Autowired
 	private UserService service;
 	
-	@Override
-	public void init() throws ServletException {
-		service = new UserServiceImpl();
-	}
+//	@Override
+//	public void init() throws ServletException {
+//		service = new UserServiceImpl();
+//	}
 	
 //	@PostMapping
 //	@ResponseBody
