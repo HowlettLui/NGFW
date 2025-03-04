@@ -17,7 +17,8 @@ public class PermissionDaoImpl implements PermissionDao {
     private DataSource ds;
 
     public PermissionDaoImpl() throws NamingException {
-        ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
+//        ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
+        ds = (DataSource) new InitialContext().lookup("java:comp/env/NGFW");
     }
 
 

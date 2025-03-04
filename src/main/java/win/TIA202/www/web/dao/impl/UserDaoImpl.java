@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import win.TIA202.www.web.dao.UserDao;
@@ -42,9 +43,10 @@ public class UserDaoImpl implements UserDao {
 		return -1;
 	}
 
+
 	@Override
 	public User selectForLogin(String email, String password) {
-//		String sql = "select * from `USER` where EMAIL = ? and PASSWORD = ?";	
+//		String sql = "select * from `USER` where EMAIL = ? and PASSWORD = ?";
 //		try (
 //			Connection conn = ds.getConnection();
 //			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -71,7 +73,7 @@ public class UserDaoImpl implements UserDao {
 //			e.printStackTrace();
 //		}
 //		return null;
-		
+
 		final String sql = "select * from `USER` where EMAIL = :email and PASSWORD = :password";
 		return session
 				.createNativeQuery(sql, User.class)
@@ -82,7 +84,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User selectByAccount(String account) {
-//		String sql = "select * from `USER` where ACCOUNT = ?";	
+//		String sql = "select * from `USER` where ACCOUNT = ?";
 //		try (
 //			Connection conn = ds.getConnection();
 //			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -126,5 +128,21 @@ public class UserDaoImpl implements UserDao {
 		return session
 				.createQuery(cQuery)
 				.uniqueResult();
+	}
+
+	@Override
+	public int update(User user) {
+		final StringBuilder hql = new StringBuilder()
+				.append("UPDATE Member SET ");
+
+		hql.append("name = :name,")
+				.append("phone = :phone,")
+				.append("email = :email");
+
+		Query<?> query = session.createQuery(hql.toString());
+		return query.setParameter("name", user.getName())
+				.setParameter("email", user.getEmail())
+				.setParameter("phone", user.getPhone())
+				.executeUpdate();
 	}
 }

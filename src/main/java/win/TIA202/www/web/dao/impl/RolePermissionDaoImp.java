@@ -16,7 +16,8 @@ public class RolePermissionDaoImp implements RolePermissionDao {
     private DataSource ds;
 
     public RolePermissionDaoImp() throws NamingException {
-        ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
+//        ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
+        ds = (DataSource) new InitialContext().lookup("java:comp/env/NGFW");
     }
 
     @Override

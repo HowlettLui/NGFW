@@ -19,7 +19,8 @@ public class RoleDaoImpl implements RoleDao {
     private DataSource ds;
 
     public RoleDaoImpl() throws NamingException {
-        ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
+//        ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
+        ds = (DataSource) new InitialContext().lookup("java:comp/env/NGFW");
     }
 
 //    @Override
@@ -41,7 +42,7 @@ public class RoleDaoImpl implements RoleDao {
                     Role role = new Role();
                     role.setRoleId(rs.getInt("ROLE_ID"));
                     role.setRoleType(rs.getString("ROLE_TYPE"));
-                    role.setCreateTime(rs.getTimestamp("CREATE_TIME"));
+//                    role.setCreateTime(rs.getTimestamp("CREATE_TIME"));
                     return role;
                 }
             }
@@ -65,7 +66,7 @@ public class RoleDaoImpl implements RoleDao {
                     Role role = new Role();
                     role.setRoleId(rs.getInt("ROLE_ID"));
                     role.setRoleType(rs.getString("ROLE_TYPE"));
-                    role.setCreateTime(rs.getTimestamp("CREATE_TIME"));
+//                    role.setCreateTime(rs.getTimestamp("CREATE_TIME"));
                     return role;
                 }
             }

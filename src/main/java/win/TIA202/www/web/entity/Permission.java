@@ -2,13 +2,19 @@ package win.TIA202.www.web.entity;
 
 import java.sql.Timestamp;
 
+import lombok.Data;
 import win.TIA202.www.core.pojo.CoreMsg;
 
-//@Entity
-//@Table(name = "PERMISSION")
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "PERMISSION")
 public class Permission extends CoreMsg {
 	private static final long serialVersionUID = 1L;
-//	@Id
+	@Id
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 //	@ManyToOne
 //	@JoinColumn(name = "PERMISSION_ID", referencedColumnName = "PERMISSION_ID")
