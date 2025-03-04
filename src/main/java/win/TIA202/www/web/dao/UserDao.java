@@ -8,6 +8,8 @@ public interface UserDao {
 	
 	User selectForLogin(String email, String password);
 
-	User selectByAccount(String account); 
+	User selectByAccount(String account);
+
+	User selectByEmail(String email); 
 	
 }

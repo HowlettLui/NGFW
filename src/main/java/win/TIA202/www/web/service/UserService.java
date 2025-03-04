@@ -4,7 +4,7 @@ import win.TIA202.www.web.entity.User;
 
 public interface UserService {
 	
-	String register(User user);
+	User register(User user);
 	
 	User login(User user);
 
