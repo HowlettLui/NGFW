@@ -8,4 +8,6 @@ public interface UserService {
 	
 	User login(User user);
 
+	User edit(User user);
+
 }

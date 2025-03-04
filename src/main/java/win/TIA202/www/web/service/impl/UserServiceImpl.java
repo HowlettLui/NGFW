@@ -134,4 +134,16 @@ public class UserServiceImpl implements UserService {
 		user.setSuccessfully(true);
 		return user;
 	}
+
+	@Override
+	public User edit(User user) {
+		final User oUser = userDao.selectByAccount(user.getAccount());
+		user.setName(oUser.getName());
+		user.setEmail(oUser.getEmail());
+		user.setPhone(oUser.getPhone());
+		final int resultCount = userDao.update(user);
+		user.setSuccessfully(resultCount > 0);
+		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
+		return user;
+	}
 }
