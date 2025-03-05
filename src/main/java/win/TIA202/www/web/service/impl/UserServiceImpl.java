@@ -23,45 +23,55 @@ public class UserServiceImpl implements UserService {
 //	}
 
 	@Override
-	public String register(User user) {
-		// 資料審查
-//		try {
-//			if (checkEmailDao.checkUserEmail(user).getUserId() > 0) {
-//				return "此帳號已被註冊";
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+	public User register(User user) {
 
 		// 資料檢核 or 資料審查
 		String account = user.getAccount();
 		String password = user.getPassword();
 		
-//		if (userDao.selectByAccount(account) != null) {
-//			return "此使用者名稱已被註冊";
-//		}
+		if (userDao.selectByAccount(account) != null) {
+			user.setMessage("此使用者名稱已被註冊");
+			user.setSuccessfully(false);
+			return user;
+		}
 
-//		if (userDao.selectByEmail(user.getEmail()) != null) {
-//			user.setMessage("此電子信箱已被註冊");
-//			user.setSuccessfully(false);
-//			return "此電子信箱已被註冊";
-//		}
-		
 		if (account == null || account.length() < 5 || account.length() > 30) {
-			return "使用者名稱長度請介於 5 ~ 30 之間";
+			user.setMessage("使用者名稱長度請介於 5 ~ 30 之間");
+			user.setSuccessfully(false);
+			return user;
 		}
 
 		if (password == null || password.length() < 6 || password.length() > 12) {
-			return "密碼長度需介於 6 ~ 12 之間";
+			user.setMessage("密碼長度需介於 6 ~ 12 之間");
+			user.setSuccessfully(false);
+			return user;
 		}
 
 		if (!Objects.equals(password, user.getPassword())) {
-			return "密碼與確認密碼不符";
+			user.setMessage("密碼與確認密碼不符");
+			user.setSuccessfully(false);
+			return user;
 		}
 
+		if (userDao.selectByEmail(user.getEmail()) != null) {
+			user.setMessage("此電子信箱已被註冊");
+			user.setSuccessfully(false);
+			return user;
+		}
+		
+		user.setRoleId(13);
+		user.setStatus(false);
 		int resultConut = userDao.insert(user);
-
-		return resultConut > 0 ? null : "發生錯誤，請聯絡客服";
+		if(resultConut < 0) {
+			user.setMessage("註冊失敗");
+			user.setSuccessfully(false);
+			return user;
+			
+		}else {
+			user.setMessage("註冊成功");
+			user.setSuccessfully(true);
+			return user;
+		}
 // -----------------------------------------------------------------------------------------------		
 //		if (user.getName() == null) {
 //			user.setMessage("使用者名稱未輸入");
@@ -132,6 +142,18 @@ public class UserServiceImpl implements UserService {
 		}
 		user.setMessage("登入成功");
 		user.setSuccessfully(true);
+		return user;
+	}
+
+	@Override
+	public User edit(User user) {
+		final User oUser = userDao.selectByAccount(user.getAccount());
+		user.setName(oUser.getName());
+		user.setEmail(oUser.getEmail());
+		user.setPhone(oUser.getPhone());
+		final int resultCount = userDao.update(user);
+		user.setSuccessfully(resultCount > 0);
+		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
 		return user;
 	}
 }

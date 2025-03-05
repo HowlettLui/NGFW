@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface ItemService {
 
-    Item showById(Integer id);
+    Item pickById(Integer id);
 
     List<Item> showAllOnShop();
 
-    String addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo);
+    ItemInfo addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo);
+
+    List<ItemInfo> findInfoByItemId(Integer itemId);
 }

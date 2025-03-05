@@ -3,9 +3,9 @@ package win.TIA202.www.web.estore.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import win.TIA202.www.core.pojo.ItemCore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @Table(name = "item_info")
-public class ItemInfo implements Serializable {
+public class ItemInfo extends ItemCore {
 
     private static final long serialVersionUID = 1430959596092393084L;
 
@@ -35,4 +35,9 @@ public class ItemInfo implements Serializable {
     private Integer staffId;
     @Column(name = "create_time", insertable = false)
     private Timestamp createTime;
+
+    @Transient
+    private String message;
+    @Transient
+    private boolean result;
 }

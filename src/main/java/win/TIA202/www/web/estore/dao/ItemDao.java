@@ -23,4 +23,6 @@ public interface ItemDao {
     Integer addItem(Item item);
 
     Integer addItemInfo(ItemInfo itemInfo);
+
+    List<ItemInfo> selectItemInfoByItemId(Integer itemId);
 }

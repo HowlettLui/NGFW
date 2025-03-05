@@ -1,42 +1,51 @@
 package win.TIA202.www.web.estore.controller;
 
-import com.google.gson.Gson;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import win.TIA202.www.web.estore.entity.Item;
 import win.TIA202.www.web.estore.entity.ItemFromAddReq;
 import win.TIA202.www.web.estore.entity.ItemInfo;
 import win.TIA202.www.web.estore.entity.ItemModel;
 import win.TIA202.www.web.estore.service.ItemService;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.UUID;
 
-@WebServlet("/estoreadmin/add")
-public class AddItemController extends HttpServlet {
-    private static final long serialVersionUID = -1981937929386601493L;
+@RestController
+@RequestMapping("estoreadmin")
+public class AddItemController {
+
+    @Value("#{systemProperties['catalina.home']}\\files\\")
+    private String fileRootPath;
+
+    @Autowired
     private ItemService service;
 
-    @Override
-    public void init() throws ServletException {
-        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-        service = context.getBean(ItemService.class);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Gson gson = new Gson();
-
-        ItemFromAddReq itemFromAddReq = gson.fromJson(req.getReader(), ItemFromAddReq.class);
-
+    @PostMapping("add")
+    public ItemInfo addItem(@RequestBody ItemFromAddReq itemFromAddReq) {
         ItemModel itemModel = itemFromAddReq.getItemModel();
         Item item = itemFromAddReq.getItem();
         ItemInfo itemInfo = itemFromAddReq.getItemInfo();
 
-        resp.getWriter().write(service.addNewItem(itemModel, item, itemInfo));
+        return service.addNewItem(itemModel, item, itemInfo);
+    }
+
+    @PostMapping("upload")
+    public ObjectNode uploadPhotos(@RequestParam("item_photo") MultipartFile[] files) throws IOException {
+
+        JsonNodeFactory factory = JsonNodeFactory.instance;
+        ObjectNode objectNode = factory.objectNode();
+
+        for (MultipartFile file : files) {
+            String photoLocation = fileRootPath + UUID.randomUUID().toString() + "." + file.getContentType().split("/")[1];
+            objectNode.put(file.getOriginalFilename(), photoLocation);
+            file.transferTo(Paths.get(photoLocation));
+        }
+        return objectNode;
     }
 }

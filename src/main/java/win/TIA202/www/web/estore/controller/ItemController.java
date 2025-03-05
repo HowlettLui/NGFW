@@ -1,37 +1,27 @@
 package win.TIA202.www.web.estore.controller;
 
-import com.google.gson.Gson;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import win.TIA202.www.web.estore.entity.Item;
 import win.TIA202.www.web.estore.service.ItemService;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+@RestController
+@RequestMapping("estore/item")
+public class ItemController {
 
-@WebServlet("/estore/item/*")
-public class ItemController extends HttpServlet {
-    private static final long serialVersionUID = -2471659853468382855L;
+    @Autowired
     private ItemService service;
 
-    @Override
-    public void init() throws ServletException {
-        ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-        service = context.getBean(ItemService.class);
-    }
+    @GetMapping("{id}")
+    public Item getItem(@PathVariable Integer id) {
+        Item item = service.pickById(id);
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Gson gson = new Gson();
-        String itemId = req.getPathInfo().substring(1);
+//        取得各個商品的所有大小、顏色
+//        List<ItemInfo> itemInfoList = service.findInfoByItemId(id);
 
-        Item item = service.showById(Integer.valueOf(itemId));
-
-        resp.getWriter().write(gson.toJson(item));
-
+        return item;
     }
 }
