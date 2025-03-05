@@ -10,11 +10,11 @@ public class Article extends CoreMsg {
 	private Integer articleId;
 	private Integer userId;
 	private Integer staffId;
-	private byte[] newsPhoto;
+	private String newsPhoto;
 	private String mainTitle;
 	private String subTitle;
 	private String content;
-	private LocalDate publishDate;
+	private Timestamp publishDate;
 	private Boolean status;
 	private String articleType;
 	private Timestamp createdTime; // Corresponds to CREATED_DATE (Timestamp of creation)
@@ -23,7 +23,7 @@ public class Article extends CoreMsg {
 	public Article() {
 		this.userId = 6;
 		this.staffId = 1;
-		this.status = false;
+		this.status = true;
 		this.articleType = "Type";
 	}
 
@@ -51,11 +51,11 @@ public class Article extends CoreMsg {
 		this.staffId = staffId;
 	}
 	
-	public byte[] getNewsPhoto() {
+	public String getNewsPhoto() {
 		return newsPhoto;
 	}
 	
-	public void setNewsPhoto(byte[] newsPhoto) {
+	public void setNewsPhoto(String newsPhoto) {
 		this.newsPhoto = newsPhoto;
 	}
 	
@@ -83,11 +83,11 @@ public class Article extends CoreMsg {
 		this.content = content;
 	}
 	
-	public LocalDate getPublishDate() {
+	public Timestamp getPublishDate() {
 		return publishDate;
 	}
 
-	public void setPublishDate(LocalDate publishDate) {
+	public void setPublishDate(Timestamp publishDate) {
 		this.publishDate = publishDate;
 	}
 
@@ -114,5 +114,6 @@ public class Article extends CoreMsg {
 	public void setCreatedTime(Timestamp createdTime) {
 		this.createdTime = createdTime;
 	}
+
 
 }
