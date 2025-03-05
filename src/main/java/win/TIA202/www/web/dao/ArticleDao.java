@@ -8,6 +8,8 @@ public interface ArticleDao {
 	
 	int add(Article article);
 	
+	List<Article> selectAll();
+	
 //	int delectById(Integer user_id);
 	
 //	int update(User user);

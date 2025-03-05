@@ -9,6 +9,8 @@ public interface ArticleService {
 	
 	String add(Article article);
 	
+	List<Article> findAll();
+	
 //	User edit(User user);
 //	
 //	User login(User user);

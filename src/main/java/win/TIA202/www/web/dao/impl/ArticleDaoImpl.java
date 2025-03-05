@@ -3,7 +3,9 @@ package win.TIA202.www.web.dao.impl;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -24,7 +26,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public int add(Article article) {
 
-		String sql = "insert into article (user_id,staff_id,maintitle,subtitle,content,publish_date,status,article_type) value(?,?,?,?,?,?,?,?)";																																					// !!
+		String sql = "insert into article (user_id,staff_id,news_photo,maintitle,subtitle,content,publish_date,status,article_type) value(?,?,?,?,?,?,?,?,?)";
 		try (
 //			Connection conn = ds.getConnection();
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGFW_DB","root","123456");
@@ -32,18 +34,53 @@ public class ArticleDaoImpl implements ArticleDao {
 		){
 			pstmt.setInt(1, article.getUserId());
 			pstmt.setInt(2, article.getStaffId());
-			pstmt.setString(3, article.getMainTitle());
-			pstmt.setString(4, article.getSubTitle());
-			pstmt.setString(5, article.getContent());
-//			pstmt.setTimestamp(6,Timestamp.valueOf(article.getPublishDate()) );
-			pstmt.setTimestamp(6, article.getPublishDate());
-			pstmt.setBoolean(7, article.getStatus());
-			pstmt.setString(8, article.getArticleType());
+			pstmt.setString(3, article.getNewsPhoto());
+			pstmt.setString(4, article.getMainTitle());
+			pstmt.setString(5, article.getSubTitle());
+			pstmt.setString(6, article.getContent());
+			pstmt.setTimestamp(7, article.getPublishDate());
+			pstmt.setBoolean(8, article.getStatus());
+			pstmt.setString(9, article.getArticleType());
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return -1;
+	}
+
+	@Override
+	public List<Article> selectAll() {
+		String sql = "SELECT * FROM article WHERE status = 1;";
+		try (
+				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGFW_DB","root","123456");
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery(); //查詢
+			)
+		
+		{
+			List<Article> list = new ArrayList<>();
+			while (rs.next()) {
+				Article article = new Article();
+				article.setArticleId(rs.getInt("article_id"));
+				article.setUserId(rs.getInt("user_id"));
+				article.setStaffId(rs.getInt("staff_id"));
+				article.setNewsPhoto(rs.getString("news_photo"));
+				article.setMainTitle(rs.getString("maintitle"));
+				article.setSubTitle(rs.getString("subtitle"));
+				article.setContent(rs.getString("content"));
+				article.setPublishDate(rs.getTimestamp("publish_date"));
+				article.setStatus(rs.getBoolean("status"));
+				article.setArticleType(rs.getString("article_type"));
+				article.setCreatedTime(rs.getTimestamp("create_time"));
+				
+				list.add(article);
+				
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 //	@Override

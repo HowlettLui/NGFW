@@ -10,7 +10,7 @@ public class Article extends CoreMsg {
 	private Integer articleId;
 	private Integer userId;
 	private Integer staffId;
-	private byte[] newsPhoto;
+	private String newsPhoto;
 	private String mainTitle;
 	private String subTitle;
 	private String content;
@@ -23,7 +23,7 @@ public class Article extends CoreMsg {
 	public Article() {
 		this.userId = 6;
 		this.staffId = 1;
-		this.status = false;
+		this.status = true;
 		this.articleType = "Type";
 	}
 
@@ -51,11 +51,11 @@ public class Article extends CoreMsg {
 		this.staffId = staffId;
 	}
 	
-	public byte[] getNewsPhoto() {
+	public String getNewsPhoto() {
 		return newsPhoto;
 	}
 	
-	public void setNewsPhoto(byte[] newsPhoto) {
+	public void setNewsPhoto(String newsPhoto) {
 		this.newsPhoto = newsPhoto;
 	}
 	
@@ -114,5 +114,6 @@ public class Article extends CoreMsg {
 	public void setCreatedTime(Timestamp createdTime) {
 		this.createdTime = createdTime;
 	}
+
 
 }
