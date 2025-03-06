@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
 //			user.setSuccessfully(false);
 //			return user;
 //		}
+//-----------------------------------------------------------------------------
 	}
 
 	@Override
@@ -151,6 +152,8 @@ public class UserServiceImpl implements UserService {
 		user.setName(oUser.getName());
 		user.setEmail(oUser.getEmail());
 		user.setPhone(oUser.getPhone());
+		user.setStatus(oUser.getStatus());
+		user.setRoleId(oUser.getRoleId());
 		final int resultCount = userDao.update(user);
 		user.setSuccessfully(resultCount > 0);
 		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");

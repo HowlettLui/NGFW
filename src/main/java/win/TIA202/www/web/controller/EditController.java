@@ -14,8 +14,8 @@ public class EditController {
 
     @PostMapping
     public User edit(@RequestBody User reqUser, @SessionAttribute("user") User seUser) {
-        final String username = seUser.getName();
-        reqUser.setName(username);
+        final String name = seUser.getName();
+        reqUser.setName(name);
         return service.edit(reqUser);
     }
 

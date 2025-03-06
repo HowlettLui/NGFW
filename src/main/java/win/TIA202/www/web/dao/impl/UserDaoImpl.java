@@ -1,5 +1,7 @@
 package win.TIA202.www.web.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -133,16 +135,31 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int update(User user) {
 		final StringBuilder hql = new StringBuilder()
-				.append("UPDATE Member SET ");
-
+				.append("UPDATE `USER` SET ");
+		final String password = user.getPassword();
+		if (password != null && !password.isEmpty()) {
+			hql.append("password = :password,");
+		}
 		hql.append("name = :name,")
-				.append("phone = :phone,")
-				.append("email = :email");
+			.append("phone = :phone,")
+			.append("email = :email,")
+			.append("status = :status,")
+			.append("roleId = :roleId,")
+			.append("WHERE ACCOUNT = :account");
 
 		Query<?> query = session.createQuery(hql.toString());
 		return query.setParameter("name", user.getName())
 				.setParameter("email", user.getEmail())
 				.setParameter("phone", user.getPhone())
+				.setParameter("status", user.getStatus())
+				.setParameter("roleId", user.getRoleId())
 				.executeUpdate();
+	}
+	
+	public List<User> selectAll() {
+		final String hql = "FROM `USER` ORDER BY Id";
+		return session
+				.createQuery(hql, User.class)
+				.getResultList();
 	}
 }

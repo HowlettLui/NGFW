@@ -2,52 +2,32 @@ package win.TIA202.www.web.entity;
 
 import java.sql.Timestamp;
 
-import lombok.Data;
-import win.TIA202.www.core.pojo.CoreMsg;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import win.TIA202.www.core.pojo.CoreMsg;
 
 
 @Entity
-@Table(name = "PERMISSION")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Permission extends CoreMsg {
 	private static final long serialVersionUID = 1L;
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@ManyToOne
-//	@JoinColumn(name = "PERMISSION_ID", referencedColumnName = "PERMISSION_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "PERMISSION_ID")
 	private Integer permissionId;
-//	@Column(name = "PERMISSION_TYPE")
+	@Column(name = "PERMISSION_TYPE")
 	private String permissionType;
-//	@Column(name = "CREATE_TIME", insertable = false)
+	@Column(name = "CREATE_TIME", insertable = false)
 	private Timestamp createTime;
-
-	public Permission() {
-	}
-
-	public Integer getPermissionId() {
-		return permissionId;
-	}
-
-	public void setPermissionId(Integer permissionId) {
-		this.permissionId = permissionId;
-	}
-
-	public String getPermissionType() {
-		return permissionType;
-	}
-
-	public void setPermissionType(String permissionType) {
-		this.permissionType = permissionType;
-	}
-
-	public Timestamp getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
-	}
 }
