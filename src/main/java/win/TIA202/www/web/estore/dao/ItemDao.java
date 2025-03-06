@@ -12,11 +12,13 @@ public interface ItemDao {
 
     ItemModel selectItemModelByModelName(String modelName);
 
+    List<ItemModel> selectAllItemModel();
+
     Item selectItemByItemName(String itemName);
 
     ItemInfo selectItemInfoBySizeAndColor(ItemInfo itemInfo);
 
-    List<Item> selectAllOnShop();
+    List<Item> selectAll();
 
     Integer addItemModel(ItemModel itemModel);
 
@@ -24,5 +26,7 @@ public interface ItemDao {
 
     Integer addItemInfo(ItemInfo itemInfo);
 
-    List<ItemInfo> selectItemInfoByItemId(Integer itemId);
+    List<ItemInfo> selectItemInfosByItemId(Integer itemId);
+
+    List<String> selectItemColorsByItemId(Integer itemId);
 }

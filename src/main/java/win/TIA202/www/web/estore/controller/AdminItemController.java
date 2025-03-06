@@ -14,11 +14,12 @@ import win.TIA202.www.web.estore.service.ItemService;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("estoreadmin")
-public class AddItemController {
+public class AdminItemController {
 
     @Value("#{systemProperties['catalina.home']}\\files\\")
     private String fileRootPath;
@@ -48,4 +49,35 @@ public class AddItemController {
         }
         return objectNode;
     }
+
+    @GetMapping("items")
+    public List<Item> getItems() {
+        return service.showAllWithModelName();
+    }
+
+    @GetMapping("items/{id}")
+    public Item getItem(@PathVariable Integer id) {
+        Item item = service.pickById(id);
+
+        if (item == null) {
+            Item itemFailed = new Item();
+            return itemFailed;
+        }
+
+//        取得單一商品所有顏色
+        List<String> colorsList = service.findColorsByItemId(id);
+
+//        取得單一商品的所有大小、顏色規格配對
+        List<ItemInfo> itemInfosList = service.findItemInfosByItemId(id);
+
+        item.setItemInfos(itemInfosList);
+        item.setItemColors(colorsList);
+
+        return item;
+    }
+
+//    編輯行為
+//    @PutMapping("items/{id}")
+//    public Item updateItem(@PathVariable Integer id, @RequestBody ItemFromAddReq itemFromAddReq) {}
+
 }
