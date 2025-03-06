@@ -10,9 +10,13 @@ public interface ItemService {
 
     Item pickById(Integer id);
 
-    List<Item> showAllOnShop();
+    List<Item> showAll();
+
+    List<Item> showAllWithModelName();
 
     ItemInfo addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo);
 
-    List<ItemInfo> findInfoByItemId(Integer itemId);
+    List<ItemInfo> findItemInfosByItemId(Integer itemId);
+
+    List<String> findColorsByItemId(Integer itemId);
 }

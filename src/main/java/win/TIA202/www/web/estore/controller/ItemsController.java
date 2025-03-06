@@ -18,6 +18,6 @@ public class ItemsController {
 
     @GetMapping
     public List<Item> getItems() {
-        return service.showAllOnShop();
+        return service.showAll();
     }
 }
