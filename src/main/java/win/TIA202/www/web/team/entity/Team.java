@@ -23,12 +23,19 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_id")
     private Integer id;
+    
     @Column(name = "team_name", nullable = false)
     private String teamName;
+    
     @Column(name = "team_logo")
     private String teamLogo;
+    
     @Column(name = "team_link")
     private String teamLink;
+    
     @Column(name = "team_court")
     private String teamCourt;
+    
+    @Column(name = "description")
+    private String description;
 }

@@ -9,6 +9,7 @@ import win.TIA202.www.web.estore.entity.ItemInfo;
 import win.TIA202.www.web.estore.entity.ItemModel;
 import win.TIA202.www.web.estore.service.ItemService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -26,8 +27,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> showAllOnShop() {
-        return dao.selectAllOnShop();
+    public List<Item> showAll() {
+        return dao.selectAll();
+    }
+
+    @Override
+    public List<Item> showAllWithModelName() {
+        List<Item> itemList = dao.selectAll();
+        List<ItemModel> itemModelList = dao.selectAllItemModel();
+        HashMap<Integer, String> itemModelHashMap = new HashMap<>();
+
+        for (ItemModel itemModel : itemModelList) {
+            itemModelHashMap.put(itemModel.getItemModelId(), itemModel.getItemModel());
+        }
+
+        for (Item item : itemList) {
+            item.setItemModel(itemModelHashMap.get(item.getItemModelId()));
+        }
+
+        return itemList;
     }
 
     @Override
@@ -57,41 +75,52 @@ public class ItemServiceImpl implements ItemService {
         boolean itemModelExist = dao.selectItemModelByModelName(itemModel.getItemModel()) != null;
         boolean itemExist = dao.selectItemByItemName(item.getItemName()) != null;
         boolean itemInfoExist = dao.selectItemInfoBySizeAndColor(itemInfo) != null;
+        System.out.println(itemModelExist + " \n" + itemExist + " \n" + itemInfoExist);
 
         if (itemModelExist && itemExist && itemInfoExist) {
             itemInfo.setMessage("該商品型號規格已存在，新增商品規格失敗");
             itemInfo.setResult(false);
             return itemInfo;
-        }
+        } else {
+            try {
+                itemModel.setStaffId(1);
+                Integer itemModelId = dao.addItemModel(itemModel);
 
-        try {
-            itemModel.setStaffId(1);
-            Integer itemModelId = dao.addItemModel(itemModel);
+                item.setStaffId(1);
+                item.setItemModelId(itemModelId);
+                Integer itemId = dao.addItem(item);
 
-            item.setStaffId(1);
-            item.setItemModelId(itemModelId);
-            Integer itemId = dao.addItem(item);
+                itemInfo.setItemId(itemId);
+                itemInfo.setItemStatus(0);
+                itemInfo.setStaffId(1);
+                dao.addItemInfo(itemInfo);
 
-            itemInfo.setItemId(itemId);
-            itemInfo.setItemStatus("未上架");
-            itemInfo.setStaffId(1);
-            dao.addItemInfo(itemInfo);
-
-            itemInfo.setMessage("新增商品成功");
-            itemInfo.setResult(true);
-            return itemInfo;
-        } catch (Exception e) {
-            itemInfo.setMessage("新增商品失敗: " + e.getMessage());
-            itemInfo.setResult(false);
-            return itemInfo;
+                itemInfo.setMessage("新增商品成功");
+                itemInfo.setResult(true);
+                return itemInfo;
+            } catch (Exception e) {
+                itemInfo.setMessage("新增商品失敗: " + e.getMessage());
+                itemInfo.setResult(false);
+                return itemInfo;
+            }
         }
     }
 
-    //    取得各個商品的所有大小、顏色
+    //    取得單一商品的所有大小、顏色規格配對
     @Override
-    public List<ItemInfo> findInfoByItemId(Integer itemId) {
+    public List<ItemInfo> findItemInfosByItemId(Integer itemId) {
         try {
-            return dao.selectItemInfoByItemId(itemId);
+            return dao.selectItemInfosByItemId(itemId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<String> findColorsByItemId(Integer itemId) {
+        try {
+            return dao.selectItemColorsByItemId(itemId);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

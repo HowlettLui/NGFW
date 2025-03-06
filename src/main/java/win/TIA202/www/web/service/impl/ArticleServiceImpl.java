@@ -53,6 +53,12 @@ public class ArticleServiceImpl implements ArticleService {
 		return resultConut > 0 ? null : "發生錯誤，請聯絡客服";
 	}
 
+	@Override
+	public List<Article> findAll() {
+		// TODO Auto-generated method stub
+		return articleDao.selectAll();
+	}
+
 //	@Override
 //	public User edit(User user) {
 //		// TODO Auto-generated method stub

@@ -3,6 +3,7 @@ package win.TIA202.www.web.estore.dao.impl;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import win.TIA202.www.web.estore.dao.ItemDao;
 import win.TIA202.www.web.estore.entity.Item;
 import win.TIA202.www.web.estore.entity.ItemInfo;
@@ -12,6 +13,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class ItemDaoImpl implements ItemDao {
 
     @PersistenceContext
@@ -19,7 +21,16 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public Item selectItemById(Integer itemId) {
-        return (Item) session.get(Item.class, itemId);
+        Item item = session.get(Item.class, itemId);
+
+        if (item == null) {
+            Item itemFailed = new Item();
+            itemFailed.setResult(false);
+            itemFailed.setMessage("取得商品資訊失敗，請聯絡管理人員");
+            return itemFailed;
+        } else {
+            return item;
+        }
     }
 
     @Override
@@ -29,6 +40,13 @@ public class ItemDaoImpl implements ItemDao {
         query.setParameter("modelName", modelName);
 
         return query.uniqueResult();
+    }
+
+    @Override
+    public List<ItemModel> selectAllItemModel() {
+        String hql = "from ItemModel";
+        Query<ItemModel> query = session.createQuery(hql, ItemModel.class);
+        return query.getResultList();
     }
 
     @Override
@@ -52,7 +70,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public List<Item> selectAllOnShop() {
+    public List<Item> selectAll() {
 //        String hql = "SELECT itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice FROM Item";
         String hql = "SELECT new win.TIA202.www.web.estore.entity.Item(itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice) FROM Item";
         Query<Item> query = session.createQuery(hql, Item.class);
@@ -78,11 +96,18 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public List<ItemInfo> selectItemInfoByItemId(Integer itemId) {
+    public List<ItemInfo> selectItemInfosByItemId(Integer itemId) {
         String hql = "from ItemInfo where itemId = :itemId";
         Query<ItemInfo> query = session.createQuery(hql, ItemInfo.class);
         query.setParameter("itemId", itemId);
+        return query.getResultList();
+    }
 
+    @Override
+    public List<String> selectItemColorsByItemId(Integer itemId) {
+        String hql = "select distinct itemColor from ItemInfo where itemId = :itemId";
+        Query<String> query = session.createQuery(hql, String.class);
+        query.setParameter("itemId", itemId);
         return query.getResultList();
     }
 }

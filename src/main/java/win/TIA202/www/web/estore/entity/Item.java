@@ -7,6 +7,7 @@ import win.TIA202.www.core.pojo.ItemCore;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,6 +39,15 @@ public class Item extends ItemCore {
     private String itemDetails;
     @Column(name = "create_time", insertable = false)
     private Timestamp createTime;
+
+    @Transient
+    private String itemModel;
+
+    @Transient
+    private List<ItemInfo> itemInfos;
+
+    @Transient
+    private List<String> itemColors;
 
     public Item(Integer itemId, String itemName, String itemType, String itemPhoto, Integer itemModelId, Integer itemPrice) {
         this.itemId = itemId;

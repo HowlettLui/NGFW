@@ -30,14 +30,10 @@ public class ItemInfo extends ItemCore {
     @Column(name = "item_stock")
     private Integer itemStock;
     @Column(name = "item_status")
-    private String itemStatus;
+    private Integer itemStatus;
     @Column(name = "staff_id")
     private Integer staffId;
     @Column(name = "create_time", insertable = false)
     private Timestamp createTime;
 
-    @Transient
-    private String message;
-    @Transient
-    private boolean result;
 }
