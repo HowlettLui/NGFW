@@ -10,6 +10,12 @@ public interface ArticleDao {
 	
 	List<Article> selectAll();
 	
+	List<Article> categoryArticle(String articleType);
+	
+	Article ViewArticle(Integer articleId);
+	
+	
+	
 //	int delectById(Integer user_id);
 	
 //	int update(User user);

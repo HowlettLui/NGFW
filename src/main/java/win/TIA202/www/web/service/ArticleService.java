@@ -11,6 +11,12 @@ public interface ArticleService {
 	
 	List<Article> findAll();
 	
+	List<Article> categoryIndex(String articleType);
+	
+	Article findIndex(Integer articleId);
+	
+	
+	
 //	User edit(User user);
 //	
 //	User login(User user);

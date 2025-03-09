@@ -10,106 +10,100 @@ import java.util.List;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import win.TIA202.www.web.dao.ArticleDao;
-//import win.TIA202.www.web.dao.UserDao;
 import win.TIA202.www.web.entity.Article;
 
+@Repository
+@Transactional
 public class ArticleDaoImpl implements ArticleDao {
-	private DataSource ds;
 
-//	public ArticleDaoImpl() throws NamingException {
-//		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
-//	}
+	@PersistenceContext
+	private Session session;
 
 	@Override
 	public int add(Article article) {
+		
+		String hqlString = "INSERT INTO Article(userId, staffId, newsPhoto, mainTitle, subTitle, content, publishDate, status, articleType) " +
+				"SELECT :userId, :staffId, :newsPhoto, :mainTitle, :subTitle, :content, :publishDate, :status, :articleType " +
+				"FROM Article WHERE articleId = 23";
 
-		String sql = "insert into article (user_id,staff_id,news_photo,maintitle,subtitle,content,publish_date,status,article_type) value(?,?,?,?,?,?,?,?,?)";
-		try (
-//			Connection conn = ds.getConnection();
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGFW_DB","root","123456");
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-		){
-			pstmt.setInt(1, article.getUserId());
-			pstmt.setInt(2, article.getStaffId());
-			pstmt.setString(3, article.getNewsPhoto());
-			pstmt.setString(4, article.getMainTitle());
-			pstmt.setString(5, article.getSubTitle());
-			pstmt.setString(6, article.getContent());
-			pstmt.setTimestamp(7, article.getPublishDate());
-			pstmt.setBoolean(8, article.getStatus());
-			pstmt.setString(9, article.getArticleType());
-			return pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -1;
+		Query query = session.createQuery(hqlString);
+		query.setParameter("userId", article.getUserId());
+		query.setParameter("staffId", article.getStaffId());
+		query.setParameter("newsPhoto", article.getNewsPhoto());
+		query.setParameter("mainTitle", article.getMainTitle());
+		query.setParameter("subTitle", article.getSubTitle());
+		query.setParameter("content", article.getContent());
+		query.setParameter("publishDate", article.getPublishDate());
+		query.setParameter("status", article.getStatus());
+		query.setParameter("articleType", article.getArticleType());
+		return query.executeUpdate();
+		
+//		session.persist(article);
+//		return article.getArticleId();
+		
+//		String sql = "insert into article (user_id,staff_id,news_photo,maintitle,subtitle,content,publish_date,status,article_type) value(?,?,?,?,?,?,?,?,?)";
+//		try (
+////			Connection conn = ds.getConnection();
+//			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGFW_DB","root","123456");
+//			PreparedStatement pstmt = conn.prepareStatement(sql);
+//		){
+//			pstmt.setInt(1, article.getUserId());
+//			pstmt.setInt(2, article.getStaffId());
+//			pstmt.setString(3, article.getNewsPhoto());
+//			pstmt.setString(4, article.getMainTitle());
+//			pstmt.setString(5, article.getSubTitle());
+//			pstmt.setString(6, article.getContent());
+//			pstmt.setTimestamp(7, article.getPublishDate());
+//			pstmt.setBoolean(8, article.getStatus());
+//			pstmt.setString(9, article.getArticleType());
+//			return pstmt.executeUpdate();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return -1;
 	}
 
 	@Override
 	public List<Article> selectAll() {
-		String sql = "SELECT * FROM article WHERE status = 1;";
-		try (
-				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/NGFW_DB","root","123456");
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				ResultSet rs = pstmt.executeQuery(); //查詢
-			)
 		
-		{
-			List<Article> list = new ArrayList<>();
-			while (rs.next()) {
-				Article article = new Article();
-				article.setArticleId(rs.getInt("article_id"));
-				article.setUserId(rs.getInt("user_id"));
-				article.setStaffId(rs.getInt("staff_id"));
-				article.setNewsPhoto(rs.getString("news_photo"));
-				article.setMainTitle(rs.getString("maintitle"));
-				article.setSubTitle(rs.getString("subtitle"));
-				article.setContent(rs.getString("content"));
-				article.setPublishDate(rs.getTimestamp("publish_date"));
-				article.setStatus(rs.getBoolean("status"));
-				article.setArticleType(rs.getString("article_type"));
-				article.setCreatedTime(rs.getTimestamp("create_time"));
-				
-				list.add(article);
-				
-			}
-			return list;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		String hql = "from Article where status = 1";
+//		String hql = "from Article where status = :status;
+		Query<Article> query = session.createQuery(hql, Article.class);
+//		query.setParameter("status", 1);
+//		List<Article> list =  query.getResultList();
+		return query.getResultList();
 	}
 
-//	@Override
-//	public int delectById(Integer user_id) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
+	
+	@Override
+	public List<Article> categoryArticle(String articleType) {
+		// TODO Auto-generated method stub
+		String hql = "from Article where status = 1 AND articleType = :articleType";
+		Query<Article> query = session.createQuery(hql, Article.class);
+		query.setParameter("articleType", articleType);
+		return query.getResultList();
+	}
+	
+	
+	@Override
+	public Article ViewArticle(Integer articleId) {
+		
+		String hql = "from Article where articleId = :articleId";
+		Query<Article> query = session.createQuery(hql, Article.class);
+		query.setParameter("articleId", articleId);
 
-//	@Override
-//	public int update(User user) {
-//		// TODO Auto-generated method stub
-//		return 0;
-//	}
-//
-//	@Override
-//	public User selectByAccount(String account) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public User selectByAccountAndPassword(User user) {
-//		// TODO for login
-//		return null;
-//	}
-//
-//	@Override
-//	public List<User> selectAll() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+		return query.getSingleResult();
+	}
+
+
+
 }

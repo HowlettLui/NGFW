@@ -19,10 +19,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
 
 import win.TIA202.www.web.entity.Article;
 import win.TIA202.www.web.service.ArticleService;
@@ -30,36 +42,45 @@ import win.TIA202.www.web.service.UserService;
 import win.TIA202.www.web.service.impl.ArticleServiceImpl;
 import win.TIA202.www.web.service.impl.UserServiceImpl;
 
-@WebServlet("/articleadd")
-public class articleAddController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@RestController
+@RequestMapping("articleadd")
+public class articleAddController{
+
+	@Autowired
 	private ArticleService service;
 	
-	@Override
-	public void init() throws ServletException {
-		try {
-			service = new ArticleServiceImpl();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
+
+	@GetMapping
+	public View redirect(){
+		return new RedirectView("newsf/news_fedit.html");
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendRedirect("newsf/news_fedit.html");
-	}
+//	@Override
+//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		resp.sendRedirect("newsf/news_fedit.html");
+//	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		MultipartRequest mreq = new MultipartRequest(req,"");
-				
-		String newsPhoto = req.getParameter("titleimage");
-		String mainTitle = req.getParameter("maintitle");
-		String subTitle = req.getParameter("subtitle");
-		String content = req.getParameter("summernote");
-		String pDate = req.getParameter("publishDate");
+	@PostMapping
+	public ObjectNode articleadd(
+			@RequestParam("titleimage") String newsPhoto,
+			@RequestParam("maintitle") String mainTitle,
+			@RequestParam("subtitle") String subTitle,
+			@RequestParam("summernote") String content,
+			@RequestParam("publishDate") String pDate
+			) {
+		
+		
 		pDate = pDate + " 00:00:00";
 		Timestamp publishDate = Timestamp.valueOf(pDate);
+		
+
+//		String newsPhoto = req.getParameter("titleimage");
+//		String mainTitle = req.getParameter("maintitle");
+//		String subTitle = req.getParameter("subtitle");
+//		String content = req.getParameter("summernote");
+//		String pDate = req.getParameter("publishDate");
+//		pDate = pDate + " 00:00:00";
+//		Timestamp publishDate = Timestamp.valueOf(pDate);
 		
 		Article article = new Article();
 		article.setNewsPhoto(newsPhoto);
@@ -67,16 +88,49 @@ public class articleAddController extends HttpServlet {
 		article.setSubTitle(subTitle);
 		article.setContent(content);
 		article.setPublishDate(publishDate);
-
-		
-//		Gson gson = new Gson();
-//		Article article = gson.fromJson(req.getReader(), Article.class);
 		
 		String errMsg = service.add(article);
 		
-		JsonObject respBody = new JsonObject();
-		respBody.addProperty("successfully", errMsg == null);
-		respBody.addProperty("errMsg", errMsg);
-		resp.getWriter().write(respBody.toString());
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode respBody = mapper.createObjectNode();
+		respBody.put("successfully", errMsg == null);
+		respBody.put("errMsg", errMsg);
+		
+//		JsonObject respBody = new JsonObject();
+//		respBody.addProperty("successfully", errMsg == null);
+//		respBody.addProperty("errMsg", errMsg);
+////		resp.getWriter().write(respBody.toString());
+		
+		return respBody;
 	}
+	
+//	@Override
+//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+////		@RequestParam("titleimage") String newsPhoto;		
+//		String newsPhoto = req.getParameter("titleimage");
+//		String mainTitle = req.getParameter("maintitle");
+//		String subTitle = req.getParameter("subtitle");
+//		String content = req.getParameter("summernote");
+//		String pDate = req.getParameter("publishDate");
+//		pDate = pDate + " 00:00:00";
+//		Timestamp publishDate = Timestamp.valueOf(pDate);
+//		
+//		Article article = new Article();
+//		article.setNewsPhoto(newsPhoto);
+//		article.setMainTitle(mainTitle);
+//		article.setSubTitle(subTitle);
+//		article.setContent(content);
+//		article.setPublishDate(publishDate);
+//
+//		
+////		Gson gson = new Gson();
+////		Article article = gson.fromJson(req.getReader(), Article.class);
+//		
+//		String errMsg = service.add(article);
+//		
+//		JsonObject respBody = new JsonObject();
+//		respBody.addProperty("successfully", errMsg == null);
+//		respBody.addProperty("errMsg", errMsg);
+//		resp.getWriter().write(respBody.toString());
+//	}
 }
