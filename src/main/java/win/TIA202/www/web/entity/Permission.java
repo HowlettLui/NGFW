@@ -3,23 +3,18 @@ package win.TIA202.www.web.entity;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import win.TIA202.www.core.pojo.CoreMsg;
 
 
-@Entity
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+//@Entity
+//@Setter
+//@Getter
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class Permission extends CoreMsg {
 	private static final long serialVersionUID = 1L;
 	@Id

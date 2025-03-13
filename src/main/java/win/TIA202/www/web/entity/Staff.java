@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import win.TIA202.www.core.pojo.CoreMsg;
 
@@ -29,11 +31,12 @@ public class Staff extends CoreMsg {
 	private String staffPhone;
 	@Column(name = "STAFF_STATUS", insertable = false)
 	private Boolean staffStatus;
-//	@ManyToOne
-//	@JoinColumn(name = "STAFF_ROLE_ID", insertable = false, updatable = false)
 	@Column(name = "STAFF_ROLE_ID")
 	private Integer staffRoleId;
 	private String sso;
+	@ManyToOne
+	@JoinColumn(name = "STAFF_ROLE_ID", insertable = false, updatable = false)
+	private Role role;
 	@Column(name = "CREATE_TIME", insertable = false)
 	private Timestamp createTime;
 

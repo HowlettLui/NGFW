@@ -1,22 +1,24 @@
 package win.TIA202.www.web.entity;
 
-import javax.persistence.Entity;
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Entity
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
+//@Entity
+//@Setter
+//@Getter
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class RolePermission {
 	
-	@JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")
+	@Column(name = "ROLE_ID")
 	private Integer roleId;
-	@JoinColumn(name = "PERMISSON_ID", referencedColumnName = "PERMISSON_ID")
+	@JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
+	private List<Role> role;
+	
+	@Column(name = "PERMISSION")
 	private Integer permissionId;
+	@JoinColumn(name = "PERMISSON_ID", insertable = false, updatable = false)
+	private List<Permission> permission;
 }

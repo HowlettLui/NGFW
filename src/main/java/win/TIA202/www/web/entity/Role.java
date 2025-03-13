@@ -1,15 +1,12 @@
 package win.TIA202.www.web.entity;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,16 +24,14 @@ public class Role extends CoreMsg {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	@ManyToOne
-	@JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID")
+	@Column(name = "ROLE_ID")
 	private Integer roleId;
 	@Column(name = "ROLE_TYPE")
 	private String roleType;
-	@OneToMany
-	@Column(name = "PERMISSION_ID")
-	@JoinColumn(name = "PERMISSION_ID", referencedColumnName = "PERMISSION_ID")
-	private Integer permissionId;
-	private List<Permission> permission; 
+	
+//	@JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
+//	private List<RolePermission> rolePermission;
+	
 	@Column(name = "CREATE_TIME", insertable = false)
 	private Timestamp createTime;
 	

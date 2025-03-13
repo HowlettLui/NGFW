@@ -1,5 +1,7 @@
 package win.TIA202.www.web.service;
 
+import java.util.List;
+
 import win.TIA202.www.web.entity.User;
 
 public interface UserService {
@@ -9,5 +11,9 @@ public interface UserService {
 	User login(User user);
 
 	User edit(User user);
+
+	User editPassword(User user);
+
+	List<User> findAllUser();
 
 }

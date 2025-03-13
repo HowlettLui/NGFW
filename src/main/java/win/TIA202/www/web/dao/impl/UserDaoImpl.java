@@ -84,6 +84,10 @@ public class UserDaoImpl implements UserDao {
 				.uniqueResult();
 	}
 
+	public User selectById(Integer userId) {
+		return session.get(User.class, userId);
+	}
+	
 	@Override
 	public User selectByAccount(String account) {
 //		String sql = "select * from `USER` where ACCOUNT = ?";
@@ -135,29 +139,51 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int update(User user) {
 		final StringBuilder hql = new StringBuilder()
-				.append("UPDATE `USER` SET ");
+			.append("UPDATE User SET ");
 		final String password = user.getPassword();
 		if (password != null && !password.isEmpty()) {
 			hql.append("password = :password,");
 		}
-		hql.append("name = :name,")
-			.append("phone = :phone,")
-			.append("email = :email,")
-			.append("status = :status,")
-			.append("roleId = :roleId,")
-			.append("WHERE ACCOUNT = :account");
+		hql
+			.append("name = :name, ")
+			.append("email = :email, ")
+			.append("phone = :phone ")
+			.append("WHERE userId = :userId");
 
 		Query<?> query = session.createQuery(hql.toString());
-		return query.setParameter("name", user.getName())
+		if (password != null && !password.isEmpty()) {
+			query.setParameter("password", user.getPassword());
+		}
+		
+		return query
+				.setParameter("userId", user.getUserId())
+				.setParameter("name", user.getName())
 				.setParameter("email", user.getEmail())
 				.setParameter("phone", user.getPhone())
-				.setParameter("status", user.getStatus())
-				.setParameter("roleId", user.getRoleId())
+				.executeUpdate();
+	}
+	
+	@Override
+	public int updatePassword(User user) {
+		final String hql = "UPDATE User SET password = :password WHERE userId = :userId";
+		Query<?> query = session.createQuery(hql);
+		return query
+				.setParameter("userId", user.getUserId())
+				.setParameter("password", user.getPassword())
 				.executeUpdate();
 	}
 	
 	public List<User> selectAll() {
-		final String hql = "FROM `USER` ORDER BY Id";
+		final String hql = "FROM User ORDER BY userId";
+		return session
+				.createQuery(hql, User.class)
+				.getResultList();
+	}
+
+
+	@Override
+	public List<User> selectAllUser() {
+		final String hql = "FROM User ORDER BY user_id";
 		return session
 				.createQuery(hql, User.class)
 				.getResultList();

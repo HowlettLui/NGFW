@@ -1,8 +1,7 @@
 package win.TIA202.www.web.service.impl;
 
+import java.util.List;
 import java.util.Objects;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -148,15 +147,31 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User edit(User user) {
-		final User oUser = userDao.selectByAccount(user.getAccount());
-		user.setName(oUser.getName());
-		user.setEmail(oUser.getEmail());
-		user.setPhone(oUser.getPhone());
+		final User oUser = userDao.selectById(user.getUserId());
 		user.setStatus(oUser.getStatus());
 		user.setRoleId(oUser.getRoleId());
 		final int resultCount = userDao.update(user);
 		user.setSuccessfully(resultCount > 0);
 		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
 		return user;
+	}
+
+	@Override
+	public User editPassword(User user) {
+		final User oUser = userDao.selectById(user.getUserId());
+		user.setName(oUser.getName());
+		user.setPhone(oUser.getPhone());
+		user.setEmail(oUser.getEmail());
+		user.setStatus(oUser.getStatus());
+		user.setRoleId(oUser.getRoleId());
+		final int resultCount = userDao.updatePassword(user);
+		user.setSuccessfully(resultCount > 0);
+		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
+		return user;
+	}
+
+	@Override
+	public List<User> findAllUser() {
+		return userDao.selectAllUser();
 	}
 }

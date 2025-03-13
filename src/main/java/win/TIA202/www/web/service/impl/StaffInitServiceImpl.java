@@ -1,5 +1,7 @@
 package win.TIA202.www.web.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,5 +70,10 @@ public class StaffInitServiceImpl implements StaffInitService {
 		staff.setMessage("登入成功");
 		staff.setSuccessfully(true);
 		return staff;
+	}
+
+	@Override
+	public List<Staff> findAllStaff() {
+		return staffInitDao.selectAllUser();
 	}
 }

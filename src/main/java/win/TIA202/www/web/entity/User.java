@@ -34,13 +34,13 @@ public class User extends CoreMsg {
 	private String email; // Corresponds to EMAIL
 	private String phone; // Corresponds to PHONE
 	private Boolean status; // Corresponds to STATUS (Account active status)
-	@ManyToOne
-	@JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
 	@Column(name = "ROLE_ID")
 	private Integer roleId;
 	private String oauth;
 	@Column(name = "CREATE_TIME", insertable = false)
 	private Timestamp createTime; // Corresponds to CREATE_DATE (Timestamp of creation)
+	@ManyToOne
+	@JoinColumn(name = "ROLE_ID", insertable = false, updatable = false)
 	private Role role;
 	private byte[] avatar;
 

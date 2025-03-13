@@ -1,5 +1,7 @@
 package win.TIA202.www.web.dao;
 
+import java.util.List;
+
 import win.TIA202.www.web.entity.Staff;
 
 public interface StaffInitDao {
@@ -9,5 +11,7 @@ public interface StaffInitDao {
 	Staff staffSelectForLogin(String staffEmail, String staffPassword);
 	
 	Staff selectByStaffEmail(String staffEmail);
+
+	List<Staff> selectAllUser();
  
 }

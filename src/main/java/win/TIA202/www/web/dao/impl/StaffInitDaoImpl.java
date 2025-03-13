@@ -1,5 +1,7 @@
 package win.TIA202.www.web.dao.impl;
 
+import java.util.List;
+
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -116,5 +118,13 @@ public class StaffInitDaoImpl implements StaffInitDao {
 		return session
 				.createQuery(cQuery)
 				.uniqueResult();
+	}
+
+	@Override
+	public List<Staff> selectAllUser() {
+		final String hql = "FROM Staff ORDER BY staff_id";
+		return session
+				.createQuery(hql, Staff.class)
+				.getResultList();
 	}
 }
