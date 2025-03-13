@@ -19,4 +19,9 @@ public class GameController {
     public List<?> gameList(){
         return svc.getGameList();
     }
+
+    @GetMapping("events")
+    public List<?> events(){
+        return svc.getEventList();
+    }
 }
