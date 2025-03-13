@@ -29,4 +29,6 @@ public interface ItemDao {
     List<ItemInfo> selectItemInfosByItemId(Integer itemId);
 
     List<String> selectItemColorsByItemId(Integer itemId);
+
+    ItemInfo selectItemInfoByItemInfoId(Integer itemInfoId);
 }

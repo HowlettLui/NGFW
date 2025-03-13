@@ -3,7 +3,6 @@ package win.TIA202.www.web.estore.dao.impl;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import win.TIA202.www.web.estore.dao.ItemDao;
 import win.TIA202.www.web.estore.entity.Item;
 import win.TIA202.www.web.estore.entity.ItemInfo;
@@ -13,7 +12,6 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@Transactional
 public class ItemDaoImpl implements ItemDao {
 
     @PersistenceContext
@@ -109,5 +107,19 @@ public class ItemDaoImpl implements ItemDao {
         Query<String> query = session.createQuery(hql, String.class);
         query.setParameter("itemId", itemId);
         return query.getResultList();
+    }
+
+    @Override
+    public ItemInfo selectItemInfoByItemInfoId(Integer itemInfoId) {
+        ItemInfo itemInfo = session.get(ItemInfo.class, itemInfoId);
+
+        if (itemInfo == null) {
+            ItemInfo itemInfoFailed = new ItemInfo();
+            itemInfoFailed.setResult(false);
+            itemInfoFailed.setMessage("取得商品資訊失敗，請聯絡管理人員");
+            return itemInfoFailed;
+        } else {
+            return itemInfo;
+        }
     }
 }

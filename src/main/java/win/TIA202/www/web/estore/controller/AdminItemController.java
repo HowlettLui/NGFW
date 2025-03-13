@@ -1,5 +1,6 @@
 package win.TIA202.www.web.estore.controller;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,15 @@ public class AdminItemController {
 
         JsonNodeFactory factory = JsonNodeFactory.instance;
         ObjectNode objectNode = factory.objectNode();
-
+        ArrayNode photoLocations = objectNode.putArray("photos");
         for (MultipartFile file : files) {
-            String photoLocation = fileRootPath + UUID.randomUUID().toString() + "." + file.getContentType().split("/")[1];
-            objectNode.put(file.getOriginalFilename(), photoLocation);
-            file.transferTo(Paths.get(photoLocation));
+            String fileName = UUID.randomUUID().toString() + "." + file.getContentType().split("/")[1];
+            String photoSaveLocation = fileRootPath + fileName;
+            String photoLocation = "/files/" + fileName;
+            photoLocations.add(photoLocation);
+            file.transferTo(Paths.get(photoSaveLocation));
         }
+
         return objectNode;
     }
 
@@ -76,7 +80,7 @@ public class AdminItemController {
         return item;
     }
 
-//    編輯行為
+//    todo: 商品編輯行為的API
 //    @PutMapping("items/{id}")
 //    public Item updateItem(@PathVariable Integer id, @RequestBody ItemFromAddReq itemFromAddReq) {}
 
