@@ -1,6 +1,7 @@
 package win.TIA202.www.web.estore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.TIA202.www.web.estore.dao.ItemDao;
@@ -26,6 +27,7 @@ public class ItemServiceImpl implements ItemService {
         return dao.selectItemById(id);
     }
 
+    @Cacheable(value = "shop", key = "all", cacheManager = "cacheManager")
     @Override
     public List<Item> showAll() {
         return dao.selectAll();

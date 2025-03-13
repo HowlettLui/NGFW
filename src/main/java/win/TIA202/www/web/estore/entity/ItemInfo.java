@@ -36,4 +36,13 @@ public class ItemInfo extends ItemCore {
     @Column(name = "create_time", insertable = false)
     private Timestamp createTime;
 
+    @Transient
+    private String itemName;
+    @Transient
+    private Integer itemPriceInCart;
+    @Transient
+    private Integer itemCountsInCart;
+    @Transient
+    private String itemPhotoInCart;
+
 }
