@@ -10,9 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import win.TIA202.www.core.pojo.CoreMsg;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Staff extends CoreMsg {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -30,18 +39,23 @@ public class Staff extends CoreMsg {
 	@Column(name = "STAFF_PHONE")
 	private String staffPhone;
 	@Column(name = "STAFF_STATUS", insertable = false)
-	private Boolean staffStatus;
+	private Integer staffStatus;
 	@Column(name = "STAFF_ROLE_ID")
 	private Integer staffRoleId;
 	private String sso;
 	@ManyToOne
 	@JoinColumn(name = "STAFF_ROLE_ID", insertable = false, updatable = false)
-	private Role role;
+	private Role staffRole;
 	@Column(name = "CREATE_TIME", insertable = false)
 	private Timestamp createTime;
-
-	public Staff() {
+	
+	public Staff(Boolean staffStatus, Integer staffRoleId) {
+		this.staffStatus = 0;
+		this.staffRoleId = staffRoleId;
 	}
+
+//	public Staff() {
+//	}
 
 //	public Staff(String staffAccount, Boolean staffStatus, Integer staffRoleId) {
 //		this.staffAccount = "SYSTEM";	// !! 暫時插入SYSTEM ，規避DB NO NULL限制 !!
@@ -49,83 +63,83 @@ public class Staff extends CoreMsg {
 //		this.staffRoleId = 12;	// 12:default_staff 
 //	}
 
-	public Integer getStaffId() {
-		return staffId;
-	}
-
-	public void setStaffId(Integer staffId) {
-		this.staffId = staffId;
-	}
-
-	public String getStaffAccount() {
-		return staffAccount;
-	}
-
-	public void setStaffAccount(String staffAccount) {
-		this.staffAccount = staffAccount;
-	}
-
-	public String getStaffPassword() {
-		return staffPassword;
-	}
-
-	public void setStaffPassword(String staffPassword) {
-		this.staffPassword = staffPassword;
-	}
-
-	public String getStaffName() {
-		return staffName;
-	}
-
-	public void setStaffName(String staffName) {
-		this.staffName = staffName;
-	}
-
-	public String getStaffEmail() {
-		return staffEmail;
-	}
-
-	public void setStaffEmail(String staffEmail) {
-		this.staffEmail = staffEmail;
-	}
-
-	public String getStaffPhone() {
-		return staffPhone;
-	}
-
-	public void setStaffPhone(String staffPhone) {
-		this.staffPhone = staffPhone;
-	}
-
-	public Boolean getStaffStatus() {
-		return staffStatus;
-	}
-
-	public void setStaffStatus(Boolean staffStatus) {
-		this.staffStatus = staffStatus;
-	}
-
-	public Integer getStaffRoleId() {
-		return staffRoleId;
-	}
-
-	public void setStaffRoleId(Integer staffRoleId) {
-		this.staffRoleId = staffRoleId;
-	}
-
-	public String getSso() {
-		return sso;
-	}
-
-	public void setSso(String sso) {
-		this.sso = sso;
-	}
-
-	public Timestamp getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
-	}
+//	public Integer getStaffId() {
+//		return staffId;
+//	}
+//
+//	public void setStaffId(Integer staffId) {
+//		this.staffId = staffId;
+//	}
+//
+//	public String getStaffAccount() {
+//		return staffAccount;
+//	}
+//
+//	public void setStaffAccount(String staffAccount) {
+//		this.staffAccount = staffAccount;
+//	}
+//
+//	public String getStaffPassword() {
+//		return staffPassword;
+//	}
+//
+//	public void setStaffPassword(String staffPassword) {
+//		this.staffPassword = staffPassword;
+//	}
+//
+//	public String getStaffName() {
+//		return staffName;
+//	}
+//
+//	public void setStaffName(String staffName) {
+//		this.staffName = staffName;
+//	}
+//
+//	public String getStaffEmail() {
+//		return staffEmail;
+//	}
+//
+//	public void setStaffEmail(String staffEmail) {
+//		this.staffEmail = staffEmail;
+//	}
+//
+//	public String getStaffPhone() {
+//		return staffPhone;
+//	}
+//
+//	public void setStaffPhone(String staffPhone) {
+//		this.staffPhone = staffPhone;
+//	}
+//
+//	public Boolean getStaffStatus() {
+//		return staffStatus;
+//	}
+//
+//	public void setStaffStatus(Boolean staffStatus) {
+//		this.staffStatus = staffStatus;
+//	}
+//
+//	public Integer getStaffRoleId() {
+//		return staffRoleId;
+//	}
+//
+//	public void setStaffRoleId(Integer staffRoleId) {
+//		this.staffRoleId = staffRoleId;
+//	}
+//
+//	public String getSso() {
+//		return sso;
+//	}
+//
+//	public void setSso(String sso) {
+//		this.sso = sso;
+//	}
+//
+//	public Timestamp getCreateTime() {
+//		return createTime;
+//	}
+//
+//	public void setCreateTime(Timestamp createTime) {
+//		this.createTime = createTime;
+//	}
 }

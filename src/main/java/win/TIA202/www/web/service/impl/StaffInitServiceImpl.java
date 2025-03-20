@@ -16,10 +16,6 @@ public class StaffInitServiceImpl implements StaffInitService {
 	@Autowired
 	private StaffInitDao staffInitDao;
 
-//	public StaffInitServiceImpl() throws NamingException {
-//		staffInitDao = new StaffInitDaoImpl();
-//	}
-
 	@Override
 	public String staffRegister(Staff staff) {
 		String staffName = staff.getStaffName();
@@ -75,5 +71,19 @@ public class StaffInitServiceImpl implements StaffInitService {
 	@Override
 	public List<Staff> findAllStaff() {
 		return staffInitDao.selectAllUser();
+	}
+
+	@Override
+	public Staff selectById(Integer id) {
+		return staffInitDao.selectStaffById(id);
+	}
+
+	@Override
+	public Staff editStaff(Staff staff) {
+//		final Staff oStaff = staffInitDao.selectStaffById(staff.getStaffId());
+		final int resultCount = staffInitDao.updateStaff(staff);
+		staff.setSuccessfully(resultCount > 0);
+		staff.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
+		return staff;
 	}
 }

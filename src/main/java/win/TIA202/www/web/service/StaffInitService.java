@@ -13,4 +13,8 @@ public interface StaffInitService {
 	Staff staffLogin(Staff staff);
 
 	List<Staff> findAllStaff();
+
+	Staff selectById(Integer id);
+
+	Staff editStaff(Staff staff);
 }

@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import win.TIA202.www.core.pojo.CoreMsg;
 
-
 @Entity
 @Setter
 @Getter

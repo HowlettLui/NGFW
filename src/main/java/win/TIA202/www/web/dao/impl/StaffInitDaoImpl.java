@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import win.TIA202.www.web.dao.StaffInitDao;
@@ -17,64 +18,15 @@ import win.TIA202.www.web.entity.Staff;
 public class StaffInitDaoImpl implements StaffInitDao {
 	@PersistenceContext
 	private Session session;
-	
-//	private DataSource ds;
-//
-//	public StaffInitDaoImpl() throws NamingException {
-//		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
-//	}
 
 	@Override
 	public int staffInitInsert(Staff staff) {
-//		String sql = "insert into STAFF(STAFF_ACCOUNT, STAFF_PASSWORD, STAFF_NAME, STAFF_EMAIL, STAFF_PHONE, STAFF_STATUS, STAFF_ROLE_ID, SSO) "
-//				+ "values ('SYSTEM' ,? ,? ,? ,? ,0 ,12 ,'SYSTEM' )"; 																																					// !!
-//		try (
-//			Connection conn = ds.getConnection(); 
-//			PreparedStatement pstmt = conn.prepareStatement(sql);
-//		){
-//			pstmt.setString(1, staff.getStaffPassword());
-//			pstmt.setString(2, staff.getStaffName());
-//			pstmt.setString(3, staff.getStaffEmail());
-//			pstmt.setString(4, staff.getStaffPhone());
-//			return pstmt.executeUpdate();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return -1;
 		session.persist(staff);
 		return 1;
 	}
 
 	@Override
-	public Staff staffSelectForLogin(String staffEmail, String staffPassword) {
-//		String sql = "select * from STAFF where STAFF_EMAIL = ? and STAFF_PASSWORD = ?";	
-//		try (
-//			Connection conn = ds.getConnection();
-//			PreparedStatement pstmt = conn.prepareStatement(sql);
-//		){
-//			pstmt.setString(1, staffEmail);
-//			pstmt.setString(2, staffPassword);
-//			try(ResultSet rs = pstmt.executeQuery()){
-//				if (rs.next()) {
-//					Staff staff = new Staff();
-//					staff.setStaffId(rs.getInt("STAFF_ID"));
-//					staff.setStaffAccount(rs.getString("STAFF_ACCOUNT"));
-//					staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
-//					staff.setStaffName(rs.getString("STAFF_NAME"));
-//					staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
-//					staff.setStaffPhone(rs.getString("STAFF_PHONE"));
-//					staff.setStaffStatus(rs.getBoolean("STAFF_STATUS"));
-//					staff.setStaffRoleId(rs.getInt("STAFF_ROLE_ID"));
-//					staff.setSso(rs.getString("SSO"));
-//					staff.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-//					return staff;
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-		
+	public Staff staffSelectForLogin(String staffEmail, String staffPassword) {		
 		final String sql = "select * from STAFF where STAFF_EMAIL = :staff_email and STAFF_PASSWORD = :staff_password";
 		return session
 				.createNativeQuery(sql, Staff.class)
@@ -84,33 +36,6 @@ public class StaffInitDaoImpl implements StaffInitDao {
 	}
 
 	public Staff selectByStaffEmail(String staffEmail) {
-//		String sql = "select * from STAFF where STAFF_EMAIL = ?";	
-//		try (
-//			Connection conn = ds.getConnection();
-//			PreparedStatement pstmt = conn.prepareStatement(sql);
-//		){
-//			pstmt.setString(1, staffEmail);
-//			try(ResultSet rs = pstmt.executeQuery()){
-//				if (rs.next()) {
-//					Staff staff = new Staff();
-//					staff.setStaffId(rs.getInt("STAFF_ID"));
-//					staff.setStaffAccount(rs.getString("STAFF_ACCOUNT"));
-//					staff.setStaffPassword(rs.getString("STAFF_PASSWORD"));
-//					staff.setStaffName(rs.getString("STAFF_NAME"));
-//					staff.setStaffEmail(rs.getString("STAFF_EMAIL"));
-//					staff.setStaffPhone(rs.getString("STAFF_PHONE"));
-//					staff.setStaffStatus(rs.getBoolean("STAFF_STATUS"));
-//					staff.setStaffRoleId(rs.getInt("STAFF_ROLE_ID"));
-//					staff.setSso(rs.getString("SSO"));
-//					staff.setCreateTime(rs.getTimestamp("CREATE_TIME"));
-//					return staff;
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-		
 		CriteriaBuilder cBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<Staff> cQuery = cBuilder.createQuery(Staff.class);
 		Root<Staff> root = cQuery.from(Staff.class);
@@ -126,5 +51,46 @@ public class StaffInitDaoImpl implements StaffInitDao {
 		return session
 				.createQuery(hql, Staff.class)
 				.getResultList();
+	}
+
+	@Override
+	public Staff selectStaffById(Integer id) {
+		final String hql = "FROM Staff WHERE staffId = :staff_id";
+		
+		return session
+				.createQuery(hql, Staff.class)
+				.setParameter("staff_id", id)
+				.uniqueResult();
+	}
+
+	@Override
+	public int updateStaff(Staff staff) {
+		final StringBuilder hql = new StringBuilder()
+			.append("UPDATE Staff SET ");
+		final String password = staff.getStaffPassword();
+		if (password != null && !password.isEmpty()) {
+			hql.append("staffPassword = :password,");
+		}
+		hql
+			.append("staffName = :staffName, ")
+			.append("staffEmail = :staffEmail, ")
+			.append("staffPhone = :staffPhone, ")
+			.append("staffStatus = :staffStatus, ")
+			.append("staffRoleId = :staffRoleId ")
+			.append("WHERE staffId = :staffId");
+
+		Query<?> query = session.createQuery(hql.toString());
+		if (password != null && !password.isEmpty()) {
+			query.setParameter("password", staff.getStaffPassword());
+		}
+			
+		return query
+				.setParameter("staffId", staff.getStaffId())
+				.setParameter("staffName", staff.getStaffName())
+				.setParameter("staffEmail", staff.getStaffEmail())
+				.setParameter("staffPhone", staff.getStaffPhone())
+				.setParameter("staffStatus", staff.getStaffStatus())
+				.setParameter("staffRoleId", staff.getStaffRole())
+				.executeUpdate();
 	}
 }

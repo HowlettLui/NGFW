@@ -71,50 +71,6 @@ public class UserServiceImpl implements UserService {
 			user.setSuccessfully(true);
 			return user;
 		}
-// -----------------------------------------------------------------------------------------------		
-//		if (user.getName() == null) {
-//			user.setMessage("使用者名稱未輸入");
-//			user.setSuccessfully(false);
-//			return user;
-//		}
-//
-//		if (user.getPassword() == null) {
-//			user.setMessage("密碼未輸入");
-//			user.setSuccessfully(false);
-//			return user;
-//		}
-//
-//		if (user.getEmail() == null) {
-//			user.setMessage("電子信箱未輸入");
-//			user.setSuccessfully(false);
-//			return user;
-//		}
-//
-//		try {
-//			if (userDao.selectByEmail(user.getEmail()) != null) {
-//				user.setMessage("此電子信箱已被註冊");
-//				user.setSuccessfully(false);
-//				return user;
-//			}
-//
-//			user.setRoleId(2);
-//			final int resultCount = userDao.insert(user);
-//			if (resultCount < 1) {
-//				user.setMessage("註冊錯誤，請聯絡管理員!");
-//				user.setSuccessfully(false);
-//				return user;
-//			}
-//
-//			user.setMessage("註冊成功");
-//			user.setSuccessfully(true);
-//			return user;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			user.setMessage("註冊錯誤，請聯絡客服");
-//			user.setSuccessfully(false);
-//			return user;
-//		}
-//-----------------------------------------------------------------------------
 	}
 
 	@Override

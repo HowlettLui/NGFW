@@ -13,5 +13,9 @@ public interface StaffInitDao {
 	Staff selectByStaffEmail(String staffEmail);
 
 	List<Staff> selectAllUser();
+
+	Staff selectStaffById(Integer id);
+
+	int updateStaff(Staff staff);
  
 }

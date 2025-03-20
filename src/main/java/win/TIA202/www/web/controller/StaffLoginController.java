@@ -47,7 +47,7 @@ public class StaffLoginController {
 		
 		Staff staff = new Staff();
 		if (email == null || password == null) {
-			staff.setMessage("無會員資訊");
+			staff.setMessage("無工作人員資訊");
 			staff.setSuccessfully(false);
 			return staff;
 		}
