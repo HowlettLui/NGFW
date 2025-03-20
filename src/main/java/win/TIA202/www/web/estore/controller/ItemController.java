@@ -39,4 +39,9 @@ public class ItemController {
 
         return item;
     }
+
+    @GetMapping("price/{id}")
+    public Integer getItemPrice(@PathVariable Integer id) {
+        return service.pickPriceById(id);
+    }
 }

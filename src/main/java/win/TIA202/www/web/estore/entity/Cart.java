@@ -6,7 +6,7 @@ import lombok.Setter;
 import win.TIA202.www.core.pojo.CartCore;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -26,7 +26,7 @@ public class Cart extends CartCore {
     @Column(name = "item_info_id")
     private Integer itemInfoId;
     @Column(name = "detail_itemcount")
-    private Integer detailItemcount;
+    private Integer detailItemCount;
     @Column(name = "create_time", insertable = false)
-    private Time createTime;
+    private Timestamp createTime;
 }

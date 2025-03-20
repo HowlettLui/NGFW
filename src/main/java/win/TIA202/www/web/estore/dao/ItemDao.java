@@ -10,13 +10,15 @@ public interface ItemDao {
 
     Item selectItemById(Integer id);
 
+    Integer selectItemPriceById(Integer id);
+
     ItemModel selectItemModelByModelName(String modelName);
 
     List<ItemModel> selectAllItemModel();
 
     Item selectItemByItemName(String itemName);
 
-    ItemInfo selectItemInfoBySizeAndColor(ItemInfo itemInfo);
+    ItemInfo selectItemInfoByItemInfoIdAndSizeAndColor(ItemInfo itemInfo);
 
     List<Item> selectAll();
 
@@ -31,4 +33,16 @@ public interface ItemDao {
     List<String> selectItemColorsByItemId(Integer itemId);
 
     ItemInfo selectItemInfoByItemInfoId(Integer itemInfoId);
+
+    ItemModel selectItemModelById(Integer itemModelId);
+
+    ItemInfo editItemInfo(ItemInfo itemInfo);
+
+    Item editItem(Item item);
+
+    ItemModel editItemModel(ItemModel itemModel);
+
+    List<Object[]> selectItemAndModelByIdForEdit(Integer itemId);
+
+    Integer updateListItemInfo(Integer itemStatus, Integer itemInfoId);
 }

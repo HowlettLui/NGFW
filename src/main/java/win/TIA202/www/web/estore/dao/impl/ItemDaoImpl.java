@@ -27,8 +27,17 @@ public class ItemDaoImpl implements ItemDao {
             itemFailed.setMessage("取得商品資訊失敗，請聯絡管理人員");
             return itemFailed;
         } else {
+            item.setResult(true);
+            item.setMessage("成功取得商品資訊");
             return item;
         }
+    }
+
+    @Override
+    public Integer selectItemPriceById(Integer id) {
+        String hql = "select itemPrice from Item where itemId = :itemId";
+        Query<Integer> query = session.createQuery(hql, Integer.class);
+        return query.setParameter("itemId", id).uniqueResult();
     }
 
     @Override
@@ -57,7 +66,7 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
-    public ItemInfo selectItemInfoBySizeAndColor(ItemInfo itemInfo) {
+    public ItemInfo selectItemInfoByItemInfoIdAndSizeAndColor(ItemInfo itemInfo) {
         String hql = "from ItemInfo where itemId = :itemId and itemSize = :itemSize and itemColor = :color";
         Query<ItemInfo> query = session.createQuery(hql, ItemInfo.class);
         query.setParameter("itemId", itemInfo.getItemId());
@@ -70,7 +79,8 @@ public class ItemDaoImpl implements ItemDao {
     @Override
     public List<Item> selectAll() {
 //        String hql = "SELECT itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice FROM Item";
-        String hql = "SELECT new win.TIA202.www.web.estore.entity.Item(itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice) FROM Item";
+//        String hql = "SELECT new win.TIA202.www.web.estore.entity.Item(itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice) FROM Item";
+        String hql = "FROM Item";
         Query<Item> query = session.createQuery(hql, Item.class);
         return query.getResultList();
     }
@@ -119,7 +129,57 @@ public class ItemDaoImpl implements ItemDao {
             itemInfoFailed.setMessage("取得商品資訊失敗，請聯絡管理人員");
             return itemInfoFailed;
         } else {
+            itemInfo.setResult(true);
+            itemInfo.setMessage("成功取得商品資料");
             return itemInfo;
         }
+    }
+
+    @Override
+    public ItemModel selectItemModelById(Integer itemModelId) {
+        ItemModel itemModel = session.get(ItemModel.class, itemModelId);
+
+        if (itemModel == null) {
+            ItemModel itemModelFailed = new ItemModel();
+            itemModelFailed.setResult(false);
+            itemModelFailed.setMessage("取得商品資訊失敗，請聯絡管理人員");
+            return itemModelFailed;
+        } else {
+            itemModel.setResult(true);
+            itemModel.setMessage("成功取得商品資料");
+            return itemModel;
+        }
+    }
+
+    @Override
+    public ItemInfo editItemInfo(ItemInfo itemInfo) {
+        return (ItemInfo) session.merge(itemInfo);
+    }
+
+    @Override
+    public Item editItem(Item item) {
+        return (Item) session.merge(item);
+    }
+
+    @Override
+    public ItemModel editItemModel(ItemModel itemModel) {
+        return (ItemModel) session.merge(itemModel);
+    }
+
+    @Override
+    public List<Object[]> selectItemAndModelByIdForEdit(Integer itemId) {
+        String hql = "SELECT i, m FROM Item i JOIN ItemModel m ON i.itemModelId = m.itemModelId WHERE i.itemId = :itemId";
+        Query<Object[]> query = session.createQuery(hql);
+        query.setParameter("itemId", itemId);
+        return query.getResultList();
+    }
+
+    @Override
+    public Integer updateListItemInfo(Integer itemStatus, Integer itemInfoId) {
+        String hql = "UPDATE ItemInfo SET itemStatus = :itemStatus where itemInfoId = :itemInfoId";
+        return session.createQuery(hql)
+            .setParameter("itemStatus", itemStatus)
+            .setParameter("itemInfoId", itemInfoId)
+            .executeUpdate();
     }
 }
