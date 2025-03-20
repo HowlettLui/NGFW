@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import win.TIA202.www.web.estore.entity.Item;
-import win.TIA202.www.web.estore.entity.ItemFromAddReq;
-import win.TIA202.www.web.estore.entity.ItemInfo;
-import win.TIA202.www.web.estore.entity.ItemModel;
+import win.TIA202.www.web.estore.entity.*;
 import win.TIA202.www.web.estore.service.ItemService;
 
 import java.io.IOException;
@@ -80,8 +77,34 @@ public class AdminItemController {
         return item;
     }
 
-//    todo: 商品編輯行為的API
-//    @PutMapping("items/{id}")
-//    public Item updateItem(@PathVariable Integer id, @RequestBody ItemFromAddReq itemFromAddReq) {}
+    //  管理員點選編輯按鈕後的行為，取得該itemInfo的資料
+    @GetMapping("item/getiteminfo/{itemInfoId}")
+    public ItemInfo getItemInfoForEdit(@PathVariable Integer itemInfoId) {
+        return service.findItemInfoByIdForEdit(itemInfoId);
+    }
+
+    // 編輯itemInfo
+    @PutMapping("item/edititeminfo/{itemInfoId}")
+    public ItemInfo editItemInfo(@RequestBody ItemInfo itemInfo) {
+        return service.editItemInfo(itemInfo);
+    }
+
+    //  管理員點選編輯按鈕後的行為，取得該item的資料
+    @GetMapping("item/getitem/{itemId}")
+    public Item getItemForEdit(@PathVariable Integer itemId) {
+        return service.findItemByIdForEdit(itemId);
+    }
+
+    // 編輯item
+    @PutMapping("item/edititem/{itemId}")
+    public Item editItemAndModel(@RequestBody ItemFromAdminEdit itemFromAdminEdit) {
+        return service.editItemAndModel(itemFromAdminEdit);
+    }
+
+    // itemInfo上下架
+    @PutMapping("iteminfo/list/{itemInfoId}/{itemStatus}")
+    public ItemInfo listItemInfo(@PathVariable String itemStatus, @PathVariable String itemInfoId) {
+        return service.updateListItemInfo(Integer.valueOf(itemStatus), Integer.valueOf(itemInfoId));
+    }
 
 }

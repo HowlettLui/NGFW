@@ -22,4 +22,33 @@ public class CartDaoImpl implements CartDao {
         query.setParameter("userId", userId);
         return query.getResultList();
     }
+
+    @Override
+    public List<Object[]> selectByUserIdAndItemInfoId(Integer userId, Integer itemInfoId) {
+        String hql = "SELECT c, ii.itemStock, ii.itemStatus FROM Cart c JOIN ItemInfo ii ON c.itemInfoId = ii.itemInfoId WHERE c.userId = :userId AND c.itemInfoId = :itemInfoId";
+        Query<Object[]> query = session.createQuery(hql);
+        query.setParameter("userId", userId);
+        query.setParameter("itemInfoId", itemInfoId);
+        return query.getResultList();
+    }
+
+    @Override
+    public Cart editCart(Cart newCart) {
+        return (Cart) session.merge(newCart);
+    }
+
+    @Override
+    public Integer deleteCartByUserIdAndItemInfoId(Cart cart) {
+        String hql = "DELETE FROM Cart WHERE userId = :userId AND itemInfoId = :itemInfoId";
+        Query query = session.createQuery(hql);
+        query.setParameter("userId", cart.getUserId());
+        query.setParameter("itemInfoId", cart.getItemInfoId());
+        return query.executeUpdate();
+    }
+
+    @Override
+    public Cart addItemInfoToCart(Cart cart) {
+        session.persist(cart);
+        return cart;
+    }
 }

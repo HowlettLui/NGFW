@@ -13,4 +13,10 @@ public interface CartService {
     ItemInfo getItemInfoByItemInfoId(Integer itemInfoId);
 
     Item getItemByItemId(Integer itemId);
+
+    Cart updateCartDetail(Cart newCart, Integer userId, Integer itemInfoId);
+
+    Integer deleteCartByUserIdAndItemInfoId(Integer userId, Integer itemInfoId);
+
+    Cart addItemInfoToCart(Cart cart);
 }
