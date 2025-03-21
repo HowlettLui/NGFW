@@ -14,6 +14,10 @@ public interface ArticleDao {
 	
 	Article ViewArticle(Integer articleId);
 	
+	List<Article> userMgrArticle(Integer userId);
+	
+	int update(Article article);
+	
 	
 	
 //	int delectById(Integer user_id);

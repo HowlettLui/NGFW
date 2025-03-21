@@ -15,6 +15,10 @@ public interface ArticleService {
 	
 	Article findIndex(Integer articleId);
 	
+	List<Article> userMgrList(Integer userId);
+	
+	String update(Article article);
+	
 	
 	
 //	User edit(User user);
