@@ -43,25 +43,21 @@ import win.TIA202.www.web.service.impl.ArticleServiceImpl;
 import win.TIA202.www.web.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("articleadd")
-public class articleAddController{
+@RequestMapping("articleedit")
+public class articleEditController{
 
 	@Autowired
 	private ArticleService service;
 	
 
 	@GetMapping
-	public View redirect(){
-		return new RedirectView("newsf/news_fadd.html");
+	public Article View(Integer articleId) {
+		return service.findIndex(articleId);
 	}
 	
-//	@Override
-//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		resp.sendRedirect("newsf/news_fedit.html");
-//	}
-	
 	@PostMapping
-	public ObjectNode articleadd(
+	public View articleedit(
+			@RequestParam("articleid") Integer articleId,
 			@RequestParam("articletype") String articleType,
 			@RequestParam("titleimage") String newsPhoto,
 			@RequestParam("maintitle") String mainTitle,
@@ -73,17 +69,9 @@ public class articleAddController{
 		
 		pDate = pDate + " 00:00:00";
 		Timestamp publishDate = Timestamp.valueOf(pDate);
-		
-
-//		String newsPhoto = req.getParameter("titleimage");
-//		String mainTitle = req.getParameter("maintitle");
-//		String subTitle = req.getParameter("subtitle");
-//		String content = req.getParameter("summernote");
-//		String pDate = req.getParameter("publishDate");
-//		pDate = pDate + " 00:00:00";
-//		Timestamp publishDate = Timestamp.valueOf(pDate);
-		
+				
 		Article article = new Article();
+		article.setArticleId(articleId);
 		article.setArticleType(articleType);
 		article.setNewsPhoto(newsPhoto);
 		article.setMainTitle(mainTitle);
@@ -91,48 +79,18 @@ public class articleAddController{
 		article.setContent(content);
 		article.setPublishDate(publishDate);
 		
-		String errMsg = service.add(article);
+		String errMsg = service.update(article);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode respBody = mapper.createObjectNode();
 		respBody.put("successfully", errMsg == null);
 		respBody.put("errMsg", errMsg);
 		
-//		JsonObject respBody = new JsonObject();
-//		respBody.addProperty("successfully", errMsg == null);
-//		respBody.addProperty("errMsg", errMsg);
-////		resp.getWriter().write(respBody.toString());
-		
-		return respBody;
+//		return new RedirectView("newsf/news_fedit.html?articleId="+articleId);
+		return new RedirectView("newsf/news_fmgr.html");
+
+//		return respBody;
 	}
 	
-//	@Override
-//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-////		@RequestParam("titleimage") String newsPhoto;		
-//		String newsPhoto = req.getParameter("titleimage");
-//		String mainTitle = req.getParameter("maintitle");
-//		String subTitle = req.getParameter("subtitle");
-//		String content = req.getParameter("summernote");
-//		String pDate = req.getParameter("publishDate");
-//		pDate = pDate + " 00:00:00";
-//		Timestamp publishDate = Timestamp.valueOf(pDate);
-//		
-//		Article article = new Article();
-//		article.setNewsPhoto(newsPhoto);
-//		article.setMainTitle(mainTitle);
-//		article.setSubTitle(subTitle);
-//		article.setContent(content);
-//		article.setPublishDate(publishDate);
-//
-//		
-////		Gson gson = new Gson();
-////		Article article = gson.fromJson(req.getReader(), Article.class);
-//		
-//		String errMsg = service.add(article);
-//		
-//		JsonObject respBody = new JsonObject();
-//		respBody.addProperty("successfully", errMsg == null);
-//		respBody.addProperty("errMsg", errMsg);
-//		resp.getWriter().write(respBody.toString());
-//	}
+
 }

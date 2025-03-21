@@ -104,6 +104,37 @@ public class ArticleDaoImpl implements ArticleDao {
 		return query.getSingleResult();
 	}
 
+	@Override
+	public List<Article> userMgrArticle(Integer userId) {
+		// TODO Auto-generated method stub
+		String hql = "from Article where userId = :userId";
+		Query<Article> query = session.createQuery(hql, Article.class);
+		query.setParameter("userId", userId);
+		return query.getResultList();
+	}
+
+	@Override
+	public int update(Article article) {
+		// TODO Auto-generated method stub
+		String hqlString = "UPDATE Article SET userId = :userId, staffId = :staffId, newsPhoto = :newsPhoto,"
+				+ "mainTitle = :mainTitle, subTitle = :subTitle, content = :content, publishDate = :publishDate,"
+				+ "status = :status, articleType = :articleType "
+				+ "WHERE article_id = :article_id";
+
+		Query query = session.createQuery(hqlString);
+		query.setParameter("userId", article.getUserId());
+		query.setParameter("staffId", article.getStaffId());
+		query.setParameter("newsPhoto", article.getNewsPhoto());
+		query.setParameter("mainTitle", article.getMainTitle());
+		query.setParameter("subTitle", article.getSubTitle());
+		query.setParameter("content", article.getContent());
+		query.setParameter("publishDate", article.getPublishDate());
+		query.setParameter("status", article.getStatus());
+		query.setParameter("articleType", article.getArticleType());
+		query.setParameter("article_id", article.getArticleId());
+		return query.executeUpdate();
+	}
+
 
 
 }

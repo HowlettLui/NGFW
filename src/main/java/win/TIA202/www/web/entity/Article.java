@@ -43,18 +43,18 @@ public class Article extends CoreMsg {
 	@JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
 	private Timestamp publishDate;
 //	@Column(name = "status")
-	private Boolean status;
+	private String status;
 	@Column(name = "article_type")
 	private String articleType;
 	@Column(name = "create_time", insertable = false)
+	@JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
 	private Timestamp createTime; // Corresponds to CREATED_DATE (Timestamp of creation)
 
 //	預設建構子
 	public Article() {
 		this.userId = 6;
 		this.staffId = 1;
-		this.status = true;
-		this.articleType = "1";
+		this.status = "1";
 	}
 
 //	public Integer getArticleId() {
