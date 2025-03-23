@@ -59,8 +59,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemInfo addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo) {
-//      除了前端確認資料外，後端也再確認一次
-        Map<? extends Supplier<?>, String> map = Map.of(
+        ItemModel itemModelFromDB = dao.selectItemModelByModelName(itemModel.getItemModel());
+        Item itemFromDB = dao.selectItemByItemName(item.getItemName());
+
+        // 除了前端確認資料外，後端也再確認一次
+        Map<? extends Supplier<?>, String> mapGen = Map.of(
             itemModel::getItemModel, "未輸入商品型號",
             item::getItemName, "未輸入商品名稱",
             item::getItemContent, "未輸入商品簡介",
@@ -73,16 +76,13 @@ public class ItemServiceImpl implements ItemService {
             itemInfo::getItemStock, "未輸入商品數量"
         );
 
-        for (Map.Entry<? extends Supplier<?>, String> entry : map.entrySet()) {
-            if (entry.getKey().get() == null) {
+        for (Map.Entry<? extends Supplier<?>, String> entry : mapGen.entrySet()) {
+            if ((entry.getKey().get() == null) && itemFromDB == null) {
                 itemInfo.setMessage(entry.getValue());
                 itemInfo.setResult(false);
                 return itemInfo;
             }
         }
-
-        ItemModel itemModelFromDB = dao.selectItemModelByModelName(itemModel.getItemModel());
-        Item itemFromDB = dao.selectItemByItemName(item.getItemName());
 
         Integer itemModelId;
         Integer itemId;
@@ -224,8 +224,8 @@ public class ItemServiceImpl implements ItemService {
             newItem::getItemName, "未輸入商品名稱",
             newItem::getItemContent, "未輸入商品簡介",
             newItem::getItemType, "未輸入商品類型",
-            newItem::getItemPrice, "未輸入商品價格"
-//            newItem::getItemDetails, "未輸入商品詳細內容", // todo: summernote可以取得原本的資料可編輯之後放回來
+            newItem::getItemPrice, "未輸入商品價格",
+            newItem::getItemDetails, "未輸入商品詳細內容"
 //            newItem::getItemPhoto, "未上傳商品照片" // todo: Uppy可以取得原本的資料可編輯之後放回來
         );
 
@@ -244,7 +244,6 @@ public class ItemServiceImpl implements ItemService {
             newItemModel.setCreateDate(oldItemModel.getCreateDate());
             newItem.setCreateTime(oldItem.getCreateTime());
             newItem.setItemPhoto(oldItem.getItemPhoto()); // todo: Uppy可以取得原本的資料可編輯之後拿掉
-            newItem.setItemDetails(oldItem.getItemDetails()); // todo: summernote可以取得原本的資料可編輯之後拿掉
             ItemModel updatedModel = dao.editItemModel(newItemModel);
             Item updatedItem = dao.editItem(newItem);
             if ((updatedModel.getItemModelId() != oldItemModel.getItemModelId()) || (updatedItem.getItemId() != oldItem.getItemId())) {
@@ -277,5 +276,12 @@ public class ItemServiceImpl implements ItemService {
             itemInfo.setMessage("更新上下架狀態成功");
             return itemInfo;
         }
+    }
+
+    @Override
+    public Boolean checkItemExist(String itemName, String itemModelName) {
+        Item item = dao.selectItemByItemName(itemName);
+        ItemModel itemModel = dao.selectItemModelByModelName(itemModelName);
+        return (item != null) && (itemModel != null);
     }
 }
