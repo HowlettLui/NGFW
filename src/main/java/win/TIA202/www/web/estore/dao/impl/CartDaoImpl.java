@@ -25,7 +25,7 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public List<Object[]> selectByUserIdAndItemInfoId(Integer userId, Integer itemInfoId) {
-        String hql = "SELECT c, ii.itemStock, ii.itemStatus FROM Cart c JOIN ItemInfo ii ON c.itemInfoId = ii.itemInfoId WHERE c.userId = :userId AND c.itemInfoId = :itemInfoId";
+        String hql = "SELECT c, ii.itemStock, ii.itemStatus, i.itemName FROM Cart c JOIN ItemInfo ii ON c.itemInfoId = ii.itemInfoId JOIN Item i ON ii.itemId = i.itemId WHERE c.userId = :userId AND c.itemInfoId = :itemInfoId";
         Query<Object[]> query = session.createQuery(hql);
         query.setParameter("userId", userId);
         query.setParameter("itemInfoId", itemInfoId);

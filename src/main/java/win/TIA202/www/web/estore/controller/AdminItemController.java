@@ -1,6 +1,5 @@
 package win.TIA202.www.web.estore.controller;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,8 @@ import java.util.UUID;
 @RequestMapping("estoreadmin")
 public class AdminItemController {
 
-    @Value("#{systemProperties['catalina.home']}\\files\\")
+    //    @Value("#{systemProperties['catalina.home']}/files/") // todo: 雲端的路徑改為單斜線
+    @Value("#{systemProperties['catalina.home']}\\files\\") // 本地
     private String fileRootPath;
 
     @Autowired
@@ -39,16 +39,22 @@ public class AdminItemController {
 
         JsonNodeFactory factory = JsonNodeFactory.instance;
         ObjectNode objectNode = factory.objectNode();
-        ArrayNode photoLocations = objectNode.putArray("photos");
-        for (MultipartFile file : files) {
-            String fileName = UUID.randomUUID().toString() + "." + file.getContentType().split("/")[1];
-            String photoSaveLocation = fileRootPath + fileName;
-            String photoLocation = "/files/" + fileName;
-            photoLocations.add(photoLocation);
-            file.transferTo(Paths.get(photoSaveLocation));
-        }
+        String fileName = UUID.randomUUID().toString() + "." + files[0].getContentType().split("/")[1];
+        String photoSaveLocation = fileRootPath + fileName; // todo: 需要再確認這樣是否可以存到雲端的指定資料夾位置
+        files[0].transferTo(Paths.get(photoSaveLocation));
+        String photoLocation = "/files/" + fileName; // todo: 確認前端可以叫出該位置檔案的路徑名稱 ("https://www.tia202g1.win/"? "C:\apache-tomcat-9.0.98\files\"?)
+        objectNode.put("photoLocation", photoLocation);
 
         return objectNode;
+
+//        ArrayNode photoLocations = objectNode.putArray("photos");
+//        for (MultipartFile file : files) {
+//            String fileName = UUID.randomUUID().toString() + "." + file.getContentType().split("/")[1];
+//            String photoSaveLocation = fileRootPath + fileName;
+//            String photoLocation = "/files/" + fileName;
+//            photoLocations.add(photoLocation);
+//            file.transferTo(Paths.get(photoSaveLocation));
+//        }
     }
 
     @GetMapping("items")
@@ -105,6 +111,11 @@ public class AdminItemController {
     @PutMapping("iteminfo/list/{itemInfoId}/{itemStatus}")
     public ItemInfo listItemInfo(@PathVariable String itemStatus, @PathVariable String itemInfoId) {
         return service.updateListItemInfo(Integer.valueOf(itemStatus), Integer.valueOf(itemInfoId));
+    }
+
+    @GetMapping("item/checkExist/{itemModel}/{itemName}")
+    public boolean checkExist(@PathVariable String itemName, @PathVariable String itemModel) {
+        return service.checkItemExist(itemName, itemModel);
     }
 
 }

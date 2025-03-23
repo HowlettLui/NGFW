@@ -32,4 +32,6 @@ public interface ItemService {
     Item editItemAndModel(ItemFromAdminEdit itemFromAdminEdit);
 
     ItemInfo updateListItemInfo(Integer itemStatus, Integer itemInfoId);
+
+    Boolean checkItemExist(String itemName, String itemModel);
 }
