@@ -122,22 +122,12 @@ public class ItemServiceImpl implements ItemService {
     //    取得單一商品的所有大小、顏色規格配對
     @Override
     public List<ItemInfo> findItemInfosByItemId(Integer itemId) {
-        try {
-            return dao.selectItemInfosByItemId(itemId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return dao.selectItemInfosByItemId(itemId);
     }
 
     @Override
     public List<String> findColorsByItemId(Integer itemId) {
-        try {
-            return dao.selectItemColorsByItemId(itemId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return dao.selectItemColorsByItemId(itemId);
     }
 
     @Override

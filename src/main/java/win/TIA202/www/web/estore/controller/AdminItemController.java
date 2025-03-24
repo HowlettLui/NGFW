@@ -71,14 +71,10 @@ public class AdminItemController {
             return itemFailed;
         }
 
-//        取得單一商品所有顏色
-        List<String> colorsList = service.findColorsByItemId(id);
-
 //        取得單一商品的所有大小、顏色規格配對
         List<ItemInfo> itemInfosList = service.findItemInfosByItemId(id);
 
         item.setItemInfos(itemInfosList);
-        item.setItemColors(colorsList);
 
         return item;
     }
@@ -95,7 +91,7 @@ public class AdminItemController {
         return service.editItemInfo(itemInfo);
     }
 
-    //  管理員點選編輯按鈕後的行為，取得該item的資料
+    // 管理員點選編輯按鈕後的行為，取得該item的資料
     @GetMapping("item/getitem/{itemId}")
     public Item getItemForEdit(@PathVariable Integer itemId) {
         return service.findItemByIdForEdit(itemId);
