@@ -49,6 +49,18 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDao.ViewArticle(articleId);
 	}
 
+	@Override
+	public List<Article> userMgrList(Integer userId) {
+		// TODO Auto-generated method stub
+		return articleDao.userMgrArticle(userId);
+	}
+
+	@Override
+	public String update(Article article) {
+		int resultConut = articleDao.update(article);
+		return resultConut > 0 ? null : "發生錯誤，請聯絡客服";
+	}
+
 	
 
 }

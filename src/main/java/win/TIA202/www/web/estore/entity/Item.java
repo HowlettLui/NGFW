@@ -41,7 +41,7 @@ public class Item extends ItemCore {
     private Timestamp createTime;
 
     @Transient
-    private String itemModel;
+    private ItemModel itemModel;
 
     @Transient
     private List<ItemInfo> itemInfos;

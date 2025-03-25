@@ -52,7 +52,7 @@ public class articleAddController{
 
 	@GetMapping
 	public View redirect(){
-		return new RedirectView("newsf/news_fedit.html");
+		return new RedirectView("newsf/news_fadd.html");
 	}
 	
 //	@Override
@@ -62,6 +62,7 @@ public class articleAddController{
 	
 	@PostMapping
 	public ObjectNode articleadd(
+			@RequestParam("articletype") String articleType,
 			@RequestParam("titleimage") String newsPhoto,
 			@RequestParam("maintitle") String mainTitle,
 			@RequestParam("subtitle") String subTitle,
@@ -83,6 +84,7 @@ public class articleAddController{
 //		Timestamp publishDate = Timestamp.valueOf(pDate);
 		
 		Article article = new Article();
+		article.setArticleType(articleType);
 		article.setNewsPhoto(newsPhoto);
 		article.setMainTitle(mainTitle);
 		article.setSubTitle(subTitle);
