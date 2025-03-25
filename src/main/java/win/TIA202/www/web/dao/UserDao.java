@@ -20,6 +20,8 @@ public interface UserDao {
 
 	int updatePassword(User user);
 
-	List<User> selectAllUser(); 
+	List<User> selectAllUser();
+
+	User updateUserSR(User user); 
 	
 }

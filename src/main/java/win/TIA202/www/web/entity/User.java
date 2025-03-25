@@ -33,7 +33,7 @@ public class User extends CoreMsg {
 	private String name; // Corresponds to NAME，use on Estore
 	private String email; // Corresponds to EMAIL
 	private String phone; // Corresponds to PHONE
-	private Boolean status; // Corresponds to STATUS (Account active status)
+	private Integer status; // Corresponds to STATUS (Account active status)
 	@Column(name = "ROLE_ID")
 	private Integer roleId;
 	private String oauth;
@@ -44,8 +44,8 @@ public class User extends CoreMsg {
 	private Role role;
 	private byte[] avatar;
 
-	public User(Boolean status, Integer roleId) {
-		this.status = false;
+	public User(Integer status, Integer roleId) {
+		this.status = 0;
 		this.roleId = roleId;
 	}
 

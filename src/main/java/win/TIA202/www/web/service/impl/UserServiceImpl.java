@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		user.setRoleId(13);
-		user.setStatus(false);
-		int resultConut = userDao.insert(user);
-		if(resultConut < 0) {
+		user.setStatus(0);
+		int resultCount = userDao.insert(user);
+		if(resultCount < 0) {
 			user.setMessage("註冊失敗");
 			user.setSuccessfully(false);
 			return user;
@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
 		}else {
 			user.setMessage("註冊成功");
 			user.setSuccessfully(true);
+//			user.setPassword("");
 			return user;
 		}
 	}
@@ -98,6 +99,7 @@ public class UserServiceImpl implements UserService {
 		}
 		user.setMessage("登入成功");
 		user.setSuccessfully(true);
+//		user.setPassword("");
 		return user;
 	}
 
@@ -109,6 +111,7 @@ public class UserServiceImpl implements UserService {
 		final int resultCount = userDao.update(user);
 		user.setSuccessfully(resultCount > 0);
 		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
+//		user.setPassword("");
 		return user;
 	}
 
@@ -123,11 +126,26 @@ public class UserServiceImpl implements UserService {
 		final int resultCount = userDao.updatePassword(user);
 		user.setSuccessfully(resultCount > 0);
 		user.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
+//		user.setPassword("");
 		return user;
 	}
 
 	@Override
 	public List<User> findAllUser() {
 		return userDao.selectAllUser();
+	}
+
+	@Override
+	public User editUserSR(User user) {
+		User upUser = userDao.updateUserSR(user);
+		if(user.getUserId() == upUser.getUserId()) {
+			upUser.setSuccessfully(true);
+			upUser.setMessage("修改成功");
+			return upUser;
+		} else {
+			user.setSuccessfully(false);
+			user.setMessage("修改失敗");
+			return user;
+		}
 	}
 }

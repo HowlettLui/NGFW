@@ -42,7 +42,10 @@ public class UserDaoImpl implements UserDao {
 //		return -1;
 		
 		session.persist(user);
-		return -1;
+		if(user.getUserId() == null) {
+			return -1;
+		}
+		return 1;
 	}
 
 
@@ -187,5 +190,14 @@ public class UserDaoImpl implements UserDao {
 		return session
 				.createQuery(hql, User.class)
 				.getResultList();
+	}
+
+
+	@Override
+	public User updateUserSR(User user) {
+		User oUser = session.load(User.class, user.getUserId());
+		oUser.setRoleId(user.getRoleId());
+		oUser.setStatus(user.getStatus());
+		return (User) session.merge(oUser);
 	}
 }

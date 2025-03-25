@@ -35,7 +35,7 @@ public class LoginController {
 		user = service.login(user);
 		if (user.isSuccessfully()) {
 			if (request.getSession(false) != null) {
-				request.changeSessionId();
+//				request.changeSessionId();
 			}
 			final HttpSession session = request.getSession();
 			session.setAttribute("login", true);

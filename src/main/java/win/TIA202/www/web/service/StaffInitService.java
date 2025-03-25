@@ -7,8 +7,6 @@ import win.TIA202.www.web.entity.Staff;
 public interface StaffInitService {
 	
 	String staffRegister(Staff staff);
-	
-//	Staff staffLogin(Staff staff);
 
 	Staff staffLogin(Staff staff);
 
@@ -17,4 +15,6 @@ public interface StaffInitService {
 	Staff selectById(Integer id);
 
 	Staff editStaff(Staff staff);
+	
+	Staff editStaffSR(Staff staff);
 }

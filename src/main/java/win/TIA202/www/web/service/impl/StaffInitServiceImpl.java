@@ -86,4 +86,20 @@ public class StaffInitServiceImpl implements StaffInitService {
 		staff.setMessage(resultCount > 0 ? "修改成功" : "修改失敗");
 		return staff;
 	}
+
+	@Override
+	public Staff editStaffSR(Staff staff) {
+		Staff upStaff = staffInitDao.updateStaffSR(staff);
+		if(staff.getStaffId() == upStaff.getStaffId()) {
+			upStaff.setSuccessfully(true);
+			upStaff.setMessage("修改成功");
+			return upStaff;
+		} else {
+			staff.setSuccessfully(false);
+			staff.setMessage("修改失敗");
+			return staff;
+		}
+	}
+	
+	
 }

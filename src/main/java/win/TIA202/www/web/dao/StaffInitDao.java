@@ -18,4 +18,5 @@ public interface StaffInitDao {
 
 	int updateStaff(Staff staff);
  
+	Staff updateStaffSR(Staff staff);
 }

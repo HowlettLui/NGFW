@@ -93,4 +93,12 @@ public class StaffInitDaoImpl implements StaffInitDao {
 				.setParameter("staffRoleId", staff.getStaffRole())
 				.executeUpdate();
 	}
+
+	@Override
+	public Staff updateStaffSR(Staff staff) {
+		Staff oStaff = session.load(Staff.class, staff.getStaffId());
+		oStaff.setStaffRoleId(staff.getStaffRoleId());
+		oStaff.setStaffStatus(staff.getStaffStatus());
+		return (Staff) session.merge(oStaff);
+	}
 }

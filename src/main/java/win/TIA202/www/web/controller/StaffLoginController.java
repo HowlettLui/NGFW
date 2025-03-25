@@ -57,7 +57,7 @@ public class StaffLoginController {
 		staff = service.staffLogin(staff);
 		if (staff.isSuccessfully()) {
 			if (request.getSession(false) != null) {
-				request.changeSessionId();
+//				request.changeSessionId();
 			}
 			final HttpSession session = request.getSession();
 			session.setAttribute("login", true);

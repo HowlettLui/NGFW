@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import win.TIA202.www.web.entity.Staff;
-import win.TIA202.www.web.entity.User;
 import win.TIA202.www.web.service.StaffInitService;
 
 @RestController
@@ -46,5 +45,12 @@ public class StaffManageController {
 		reqStaff.setStaffId(staffId);
 		return service.editStaff(reqStaff);
 	}
-
+	
+	@PutMapping("manage")
+	public Staff editStaff(@RequestBody Staff reqStaff) {
+		Staff newStaff = service.editStaffSR(reqStaff);
+		newStaff.setSuccessfully(true);
+		newStaff.setMessage("更新成功");
+		return service.editStaffSR(newStaff);
+	}
 }
