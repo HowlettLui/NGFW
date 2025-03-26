@@ -231,7 +231,7 @@ public class ItemServiceImpl implements ItemService {
         ItemModel oldItemModel = dao.selectItemModelById(newItem.getItemModelId());
 
         if (oldItemModel.isResult() && oldItem.isResult()) {
-            newItemModel.setCreateDate(oldItemModel.getCreateDate());
+            newItemModel.setCreateTime(oldItemModel.getCreateTime());
             newItem.setCreateTime(oldItem.getCreateTime());
             newItem.setItemPhoto(oldItem.getItemPhoto()); // todo: Uppy可以取得原本的資料可編輯之後拿掉
             ItemModel updatedModel = dao.editItemModel(newItemModel);

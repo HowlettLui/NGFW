@@ -45,4 +45,10 @@ public interface ItemDao {
     List<Object[]> selectItemAndModelByIdForEdit(Integer itemId);
 
     Integer updateListItemInfo(Integer itemStatus, Integer itemInfoId);
+
+    Integer selectItemCountByItemInfoId(Integer itemInfoId);
+
+    Integer editItemCountByItemInfoId(Integer itemTotalCount, Integer itemInfoId);
+
+    Integer editItemStockBackByItemInfoId(Integer itemCountInReceipt, Integer itemInfoId);
 }

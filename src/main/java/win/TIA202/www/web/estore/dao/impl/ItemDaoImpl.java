@@ -78,8 +78,6 @@ public class ItemDaoImpl implements ItemDao {
 
     @Override
     public List<Item> selectAll() {
-//        String hql = "SELECT itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice FROM Item";
-//        String hql = "SELECT new win.TIA202.www.web.estore.entity.Item(itemId, itemName, itemType, itemPhoto, itemModelId, itemPrice) FROM Item";
         String hql = "FROM Item";
         Query<Item> query = session.createQuery(hql, Item.class);
         return query.getResultList();
@@ -182,4 +180,32 @@ public class ItemDaoImpl implements ItemDao {
             .setParameter("itemInfoId", itemInfoId)
             .executeUpdate();
     }
+
+    @Override
+    public Integer selectItemCountByItemInfoId(Integer itemInfoId) {
+        String hql = "SELECT itemStock FROM ItemInfo WHERE itemInfoId = :itemInfoId";
+        Query<Integer> query = session.createQuery(hql, Integer.class);
+        query.setParameter("itemInfoId", itemInfoId);
+        return query.uniqueResult();
+    }
+
+    @Override
+    public Integer editItemCountByItemInfoId(Integer itemTotalCount, Integer itemInfoId) {
+        String hql = "UPDATE ItemInfo SET itemStock = :itemTotalCount where itemInfoId = :itemInfoId";
+        return session.createQuery(hql)
+            .setParameter("itemTotalCount", itemTotalCount)
+            .setParameter("itemInfoId", itemInfoId)
+            .executeUpdate();
+    }
+
+    @Override
+    public Integer editItemStockBackByItemInfoId(Integer itemCountInReceipt, Integer itemInfoId) {
+        String hql = "UPDATE ItemInfo SET itemStock = itemStock + :itemCountInReceipt where itemInfoId = :itemInfoId";
+        return session.createQuery(hql)
+            .setParameter("itemCountInReceipt", itemCountInReceipt)
+            .setParameter("itemInfoId", itemInfoId)
+            .executeUpdate();
+    }
+
+
 }
