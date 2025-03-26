@@ -27,11 +27,17 @@ public class Receipt implements Serializable {
     private Integer receiptItemCount;
     @Column(name = "receipt_itemprice")
     private Integer receiptItemPrice;
-    @Column(name = "create_time")
+    @Column(name = "create_time", insertable = false)
     private Timestamp createTime;
 
     @Transient
     private boolean result;
     @Transient
     private String message;
+    @Transient
+    private String itemName;
+    @Transient
+    private String itemInfoSize;
+    @Transient
+    private String itemInfoColor;
 }

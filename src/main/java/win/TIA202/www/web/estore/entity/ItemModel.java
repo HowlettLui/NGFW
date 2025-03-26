@@ -24,6 +24,6 @@ public class ItemModel extends ItemCore {
     @Column(name = "staff_id")
     private Integer staffId;
     @Column(name = "create_time", insertable = false)
-    private Timestamp createDate;
+    private Timestamp createTime;
 
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 @JsonIgnoreProperties("hibernateLazyInitializer")
 public class CartCore implements Serializable {
-    private static final long serialVersionUID = 5409958585139695167L;
+    private static final long serialVersionUID = -2068445282926630557L;
 
     private boolean result;
     private String message;

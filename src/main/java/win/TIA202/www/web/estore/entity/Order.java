@@ -35,7 +35,7 @@ public class Order implements Serializable {
     private Integer orderTotalPrice;
     @Column(name = "order_description")
     private String orderDescription;
-    @Column(name = "create_time")
+    @Column(name = "create_time", insertable = false)
     private Timestamp createTime;
 
     @Transient

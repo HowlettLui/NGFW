@@ -35,7 +35,7 @@ public class SpringDataRedisConfig {
     @Bean
     public RedisCacheManager cacheManager() {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofDays(1))
+            .entryTtl(Duration.ofMinutes(15))
 //            .entryTtl(Duration.ofSeconds(30))
             .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
             .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
