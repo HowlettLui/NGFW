@@ -31,11 +31,11 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public int add(Article article) {
 		
-		String hqlString = "INSERT INTO Article(userId, staffId, newsPhoto, mainTitle, subTitle, content, publishDate, status, articleType) " +
+		String hql = "INSERT INTO Article(userId, staffId, newsPhoto, mainTitle, subTitle, content, publishDate, status, articleType) " +
 				"SELECT :userId, :staffId, :newsPhoto, :mainTitle, :subTitle, :content, :publishDate, :status, :articleType " +
 				"FROM Article WHERE articleId = 23";
 
-		Query query = session.createQuery(hqlString);
+		Query query = session.createQuery(hql);
 		query.setParameter("userId", article.getUserId());
 		query.setParameter("staffId", article.getStaffId());
 		query.setParameter("newsPhoto", article.getNewsPhoto());
@@ -74,8 +74,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public List<Article> selectAll() {
-		
-		String hql = "from Article where status = 1";
+		String hql = "from Article where status = 1 order by publishDate desc";
 //		String hql = "from Article where status = :status;
 		Query<Article> query = session.createQuery(hql, Article.class);
 //		query.setParameter("status", 1);
@@ -83,11 +82,11 @@ public class ArticleDaoImpl implements ArticleDao {
 		return query.getResultList();
 	}
 
-	
+
 	@Override
 	public List<Article> categoryArticle(String articleType) {
-		// TODO Auto-generated method stub
-		String hql = "from Article where status = 1 AND articleType = :articleType";
+//		String hql = "from Article where status = 1 AND articleType = :articleType";
+		String hql = "from Article where status = 1 AND articleType = :articleType order by publishDate desc";
 		Query<Article> query = session.createQuery(hql, Article.class);
 		query.setParameter("articleType", articleType);
 		return query.getResultList();
@@ -100,14 +99,13 @@ public class ArticleDaoImpl implements ArticleDao {
 		String hql = "from Article where articleId = :articleId";
 		Query<Article> query = session.createQuery(hql, Article.class);
 		query.setParameter("articleId", articleId);
-
 		return query.getSingleResult();
 	}
 
 	@Override
 	public List<Article> userMgrArticle(Integer userId) {
-		// TODO Auto-generated method stub
-		String hql = "from Article where userId = :userId";
+//		String hql = "from Article where userId = :userId";
+		String hql = "from Article where userId = :userId order by createTime desc";
 		Query<Article> query = session.createQuery(hql, Article.class);
 		query.setParameter("userId", userId);
 		return query.getResultList();
@@ -115,13 +113,12 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public int update(Article article) {
-		// TODO Auto-generated method stub
-		String hqlString = "UPDATE Article SET userId = :userId, staffId = :staffId, newsPhoto = :newsPhoto,"
+		String hql = "UPDATE Article SET userId = :userId, staffId = :staffId, newsPhoto = :newsPhoto,"
 				+ "mainTitle = :mainTitle, subTitle = :subTitle, content = :content, publishDate = :publishDate,"
 				+ "status = :status, articleType = :articleType "
 				+ "WHERE article_id = :article_id";
 
-		Query query = session.createQuery(hqlString);
+		Query query = session.createQuery(hql);
 		query.setParameter("userId", article.getUserId());
 		query.setParameter("staffId", article.getStaffId());
 		query.setParameter("newsPhoto", article.getNewsPhoto());
@@ -135,6 +132,43 @@ public class ArticleDaoImpl implements ArticleDao {
 		return query.executeUpdate();
 	}
 
+	@Override
+	public int userDel(Integer userId, Integer articleId) {
+		String hql = "DELETE Article WHERE userId = :userId AND articleId = :articleId ";
+
+		Query query = session.createQuery(hql);
+		query.setParameter("userId", userId);
+		query.setParameter("articleId", articleId);
+		return query.executeUpdate();
+	}
+
+	@Override
+	public List<Object[]> selectAllReview() {
+//		String hql = "from Article order by createTime desc";
+		String hql = "select a, u.name from Article a join User u on a.userId = u.userId order by a.createTime desc";
+		Query<Object[]> query = session.createQuery(hql, Object[].class);
+		return query.getResultList();
+	}
+	
+	@Override
+	public int updateReview(Article article) {
+		String hql = "UPDATE Article SET status = :status, reviewContent = :reviewContent "
+				+ "WHERE article_id = :article_id";
+
+		Query query = session.createQuery(hql);
+		query.setParameter("status", article.getStatus());
+		query.setParameter("reviewContent", article.getReviewContent());
+		query.setParameter("article_id", article.getArticleId());
+		return query.executeUpdate();
+	}
+
+	@Override
+	public List<Object[]> categoryReview(String status) {
+		String hql = "select a, u.name from Article a join User u on a.userId = u.userId where a.status = :status order by a.createTime desc";
+		Query<Object[]> query = session.createQuery(hql, Object[].class);
+		query.setParameter("status", status);
+		return query.getResultList();
+	}
 
 
 }

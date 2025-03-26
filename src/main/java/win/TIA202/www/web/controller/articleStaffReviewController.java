@@ -56,30 +56,20 @@ public class articleStaffReviewController{
 	}
 	
 	@PostMapping
-	public View articleedit(
+	public View articlereview(
 			@RequestParam("articleid") Integer articleId,
-			@RequestParam("articletype") String articleType,
-			@RequestParam("titleimage") String newsPhoto,
-			@RequestParam("maintitle") String mainTitle,
-			@RequestParam("subtitle") String subTitle,
-			@RequestParam("summernote") String content,
-			@RequestParam("publishDate") String pDate
+			@RequestParam("reviewContent") String reviewContent,
+			@RequestParam("status") String status
 			) {
 		
 		
-		pDate = pDate + " 00:00:00";
-		Timestamp publishDate = Timestamp.valueOf(pDate);
 				
 		Article article = new Article();
 		article.setArticleId(articleId);
-		article.setArticleType(articleType);
-		article.setNewsPhoto(newsPhoto);
-		article.setMainTitle(mainTitle);
-		article.setSubTitle(subTitle);
-		article.setContent(content);
-		article.setPublishDate(publishDate);
+		article.setReviewContent(reviewContent);
+		article.setStatus(status);
 		
-		String errMsg = service.update(article);
+		String errMsg = service.updateReview(article);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode respBody = mapper.createObjectNode();
