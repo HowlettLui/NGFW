@@ -61,13 +61,14 @@ public class articleAddController{
 //	}
 	
 	@PostMapping
-	public ObjectNode articleadd(
+	public View articleadd(
 			@RequestParam("articletype") String articleType,
 			@RequestParam("titleimage") String newsPhoto,
 			@RequestParam("maintitle") String mainTitle,
 			@RequestParam("subtitle") String subTitle,
 			@RequestParam("summernote") String content,
-			@RequestParam("publishDate") String pDate
+			@RequestParam("publishDate") String pDate,
+			@RequestParam("status") String status
 			) {
 		
 		
@@ -90,6 +91,7 @@ public class articleAddController{
 		article.setSubTitle(subTitle);
 		article.setContent(content);
 		article.setPublishDate(publishDate);
+		article.setStatus(status);
 		
 		String errMsg = service.add(article);
 		
@@ -103,7 +105,8 @@ public class articleAddController{
 //		respBody.addProperty("errMsg", errMsg);
 ////		resp.getWriter().write(respBody.toString());
 		
-		return respBody;
+//		return respBody;
+		return new RedirectView("newsf/news_fmgr.html");
 	}
 	
 //	@Override

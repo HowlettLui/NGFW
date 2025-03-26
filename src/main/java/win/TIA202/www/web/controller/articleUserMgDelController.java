@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.servlet.view.RedirectView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -38,37 +41,15 @@ import win.TIA202.www.web.service.impl.ArticleServiceImpl;
 import win.TIA202.www.web.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("articlesmgr")
-public class articleStaffMgController {
+@RequestMapping("articleumgrdel")
+public class articleUserMgDelController {
 
 	@Autowired
 	private ArticleService service;
 	
 	@GetMapping
-	public List<Article> indexList(String status){
-//		int uid = 6;
-//		return service.findAllReview();
-		
-		if(status == null) {
-			return service.findAllReview();
-		}
-		else {
-			return service.categoryReview(status);
-		}
-
+	public Integer userArticleDel(Integer articleId){
+		int uid = 6;
+		return service.userMgrDel(uid,articleId);
 	}
-	
-//	@GetMapping
-//	public List<Article> indexList(String articleType){
-//		
-//		if(articleType == null) {
-//			return service.findAll();
-//		}
-//		else {
-//			return service.categoryIndex(articleType);
-//		}
-//	}
-	
-
-	
 }

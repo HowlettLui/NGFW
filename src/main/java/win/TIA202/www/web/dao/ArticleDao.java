@@ -5,29 +5,27 @@ import java.util.List;
 import win.TIA202.www.web.entity.Article;
 
 public interface ArticleDao {
+
+	List<Article> selectAll();  // 顯示所有可呈現文章
 	
-	int add(Article article);
+	List<Article> categoryArticle(String articleType);  // 分類新聞/文章
 	
-	List<Article> selectAll();
+	Article ViewArticle(Integer articleId); // 查文章使呈現
 	
-	List<Article> categoryArticle(String articleType);
+	List<Article> userMgrArticle(Integer userId); // 使用者 查該user文章使呈現
 	
-	Article ViewArticle(Integer articleId);
+	int add(Article article); // 使用者 新增文章
 	
-	List<Article> userMgrArticle(Integer userId);
+	int update(Article article); // 使用者 更新文章
 	
-	int update(Article article);
+	int userDel(Integer userId, Integer articleId); // 使用者 刪除文章
+	
+	List<Object[]> selectAllReview(); // 管理者 呈現文章審核
+	
+	List<Object[]> categoryReview(String status);  // 管理者 分類文章審核狀態
+	
+	int updateReview(Article article); // 管理者 文章審核
 	
 	
-	
-//	int delectById(Integer user_id);
-	
-//	int update(User user);
-	
-//	User selectByAccount(String account);
-	
-//	User selectByAccountAndPassword(User user); 
-	
-//	List<User> selectAll();
 	
 }

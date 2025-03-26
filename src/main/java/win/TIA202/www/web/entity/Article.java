@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -39,6 +40,7 @@ public class Article extends CoreMsg {
 	private String subTitle;
 //	@Column(name = "content")
 	private String content;
+	private String reviewContent;
 	@Column(name = "publish_date")
 	@JsonFormat(pattern = "yyyy/MM/dd", timezone = "GMT+8")
 	private Timestamp publishDate;
@@ -54,8 +56,10 @@ public class Article extends CoreMsg {
 	public Article() {
 		this.userId = 6;
 		this.staffId = 1;
-		this.status = "1";
 	}
+	
+	@Transient
+	private String name;
 
 //	public Integer getArticleId() {
 //		return articleId;

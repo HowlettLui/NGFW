@@ -7,27 +7,24 @@ import win.TIA202.www.web.entity.Article;
 
 public interface ArticleService {
 	
-	String add(Article article);
+	List<Article> findAll(); // 顯示所有可呈現文章
 	
-	List<Article> findAll();
+	List<Article> categoryIndex(String articleType); // 分類新聞/文章
 	
-	List<Article> categoryIndex(String articleType);
+	Article findIndex(Integer articleId); // 查文章使呈現
 	
-	Article findIndex(Integer articleId);
+	List<Article> userMgrList(Integer userId); // 使用者 查該user文章使呈現
 	
-	List<Article> userMgrList(Integer userId);
+	String add(Article article); // 使用者 新增文章
 	
-	String update(Article article);
+	String update(Article article); // 使用者 更新文章
 	
+	Integer userMgrDel(Integer userId, Integer articleId); // 使用者 刪除文章
 	
+	List<Article> findAllReview(); // 管理者 呈現文章審核
 	
-//	User edit(User user);
-//	
-//	User login(User user);
-//	
-//	List<User> findAll();
-//	
-//	boolean removeById(Integer user_id);
-//	
-//	boolean selectByEmail(User user);
+	List<Article> categoryReview(String status); // 管理者 分類文章審核狀態
+	
+	String updateReview(Article article); // 管理者 文章審核
+
 }

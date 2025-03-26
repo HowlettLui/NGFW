@@ -63,7 +63,8 @@ public class articleEditController{
 			@RequestParam("maintitle") String mainTitle,
 			@RequestParam("subtitle") String subTitle,
 			@RequestParam("summernote") String content,
-			@RequestParam("publishDate") String pDate
+			@RequestParam("publishDate") String pDate,
+			@RequestParam("status") String status
 			) {
 		
 		
@@ -78,6 +79,7 @@ public class articleEditController{
 		article.setSubTitle(subTitle);
 		article.setContent(content);
 		article.setPublishDate(publishDate);
+		article.setStatus(status);
 		
 		String errMsg = service.update(article);
 		
