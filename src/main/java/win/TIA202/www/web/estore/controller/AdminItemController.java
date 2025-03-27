@@ -9,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import win.TIA202.www.web.estore.entity.*;
 import win.TIA202.www.web.estore.service.ItemService;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
@@ -18,8 +21,7 @@ import java.util.UUID;
 @RequestMapping("estoreadmin")
 public class AdminItemController {
 
-    @Value("#{systemProperties['catalina.home']}/files/") // todo: 雲端的路徑改為單斜線
-//  @Value("#{systemProperties['catalina.home']}\\files\\") // 本地
+    @Value("#{systemProperties['catalina.home'] + '/files'}") // 應該通用
     private String fileRootPath;
 
     @Autowired
@@ -39,9 +41,14 @@ public class AdminItemController {
 
         JsonNodeFactory factory = JsonNodeFactory.instance;
         ObjectNode objectNode = factory.objectNode();
-        String fileName = UUID.randomUUID().toString() + "." + files[0].getContentType().split("/")[1]; // todo: 時間戳
-        String photoSaveLocation = fileRootPath + fileName; // todo: 需要再確認這樣是否可以存到雲端的指定資料夾位置
-        files[0].transferTo(Paths.get(photoSaveLocation));
+        String fileName = UUID.randomUUID().toString() + "." + files[0].getContentType().split("/")[1]; // todo: 之後再加時間戳
+        String photoSaveLocation = Paths.get(fileRootPath, fileName).toString(); // todo: 需要再確認這樣是否可以存到雲端的指定資料夾位置
+        File file = new File(photoSaveLocation);
+        file.setReadable(true, false);
+        try (OutputStream outputStream = new FileOutputStream(file)) {
+            outputStream.write(files[0].getBytes());
+        }
+
         String photoLocation = "https://www.tia202g1.win/files/" + fileName; // todo: 確認前端可以叫出該位置檔案的路徑名稱 ("https://www.tia202g1.win/files/123.jpg")
         objectNode.put("photoLocation", photoLocation);
 
@@ -112,6 +119,11 @@ public class AdminItemController {
     @GetMapping("item/checkExist/{itemModel}/{itemName}")
     public boolean checkExist(@PathVariable String itemName, @PathVariable String itemModel) {
         return service.checkItemExist(itemName, itemModel);
+    }
+
+    @GetMapping("items/search")
+    public List<Item> searchItem(@RequestParam(name = "keyword", required = false, defaultValue = "") String keyword) {
+        return service.searchItem(keyword);
     }
 
 }

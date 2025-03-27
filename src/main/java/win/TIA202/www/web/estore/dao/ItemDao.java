@@ -22,6 +22,14 @@ public interface ItemDao {
 
     List<Item> selectAll();
 
+    List<Item> selectForOnePage(Integer page, Integer pageSize);
+
+    Long countItems();
+
+    List<Item> selectByKeyword(String keyword);
+
+    List<Item> selectRecommendByType(String itemType);
+
     Integer addItemModel(ItemModel itemModel);
 
     Integer addItem(Item item);

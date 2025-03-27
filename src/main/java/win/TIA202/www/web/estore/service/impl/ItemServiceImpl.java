@@ -6,10 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.TIA202.www.web.estore.dao.ItemDao;
-import win.TIA202.www.web.estore.entity.Item;
-import win.TIA202.www.web.estore.entity.ItemFromAdminEdit;
-import win.TIA202.www.web.estore.entity.ItemInfo;
-import win.TIA202.www.web.estore.entity.ItemModel;
+import win.TIA202.www.web.estore.entity.*;
 import win.TIA202.www.web.estore.service.ItemService;
 
 import java.util.HashMap;
@@ -34,10 +31,41 @@ public class ItemServiceImpl implements ItemService {
         return dao.selectItemPriceById(id);
     }
 
-    @Cacheable(value = "shop", cacheManager = "cacheManager")
+    @Cacheable(value = "shop", key = "'allitems'", cacheManager = "cacheManager")
     @Override
     public List<Item> showAll() {
         return dao.selectAll();
+    }
+
+    @Cacheable(value = "shop", key = "#page", cacheManager = "cacheManager")
+    @Override
+    public PageResponse<Item> showOnOnePage(Integer page, Integer pageSize) {
+        List<Item> items = dao.selectForOnePage(page, pageSize);
+        Long totalItems = dao.countItems();
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        return new PageResponse<>(items, totalPages, totalItems, page, pageSize);
+    }
+
+    @Override
+    public List<Item> searchItem(String keyword) {
+        List<Item> items = dao.selectByKeyword(keyword);
+        List<ItemModel> itemModelList = dao.selectAllItemModel();
+        HashMap<Integer, ItemModel> itemModelHashMap = new HashMap<>();
+
+        for (ItemModel itemModel : itemModelList) {
+            itemModelHashMap.put(itemModel.getItemModelId(), itemModel);
+        }
+
+        for (Item item : items) {
+            item.setItemModel(itemModelHashMap.get(item.getItemModelId()));
+        }
+
+        return items;
+    }
+
+    @Override
+    public List<Item> showRecommend(String itemType) {
+        return dao.selectRecommendByType(itemType);
     }
 
     @Override
@@ -57,6 +85,7 @@ public class ItemServiceImpl implements ItemService {
         return itemList;
     }
 
+    @CacheEvict(value = "shop", allEntries = true, cacheManager = "cacheManager")
     @Override
     public ItemInfo addNewItem(ItemModel itemModel, Item item, ItemInfo itemInfo) {
         ItemModel itemModelFromDB = dao.selectItemModelByModelName(itemModel.getItemModel());
@@ -204,6 +233,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @CacheEvict(value = "shop", allEntries = true, cacheManager = "cacheManager")
     @Override
     public Item editItemAndModel(ItemFromAdminEdit itemFromAdminEdit) {
         ItemModel newItemModel = itemFromAdminEdit.getItemModel();
