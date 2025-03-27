@@ -84,6 +84,49 @@ public class ItemDaoImpl implements ItemDao {
     }
 
     @Override
+    public List<Item> selectForOnePage(Integer page, Integer pageSize) {
+        return session.createQuery("FROM Item", Item.class)
+            .setFirstResult(page * pageSize)
+            .setMaxResults(pageSize)
+            .getResultList();
+    }
+
+    @Override
+    public Long countItems() {
+        return session.createQuery("SELECT COUNT(i) FROM Item i", Long.class).uniqueResult();
+    }
+
+    @Override
+    public List<Item> selectByKeyword(String keyword) {
+        String[] keywords = keyword.split("");
+        String hql = "FROM Item WHERE ";
+        StringBuilder conditionBuilder = new StringBuilder();
+
+        for (int i = 0; i < keywords.length; i++) {
+            if (i > 0) {
+                conditionBuilder.append(" AND "); // 條件之間使用 AND
+            }
+            conditionBuilder.append(" (itemName LIKE :keyword").append(i).append(" OR itemContent LIKE :keyword").append(i).append(" OR itemType LIKE :keyword").append(i).append(" OR itemDetails LIKE :keyword").append(i).append(")");
+        }
+
+        hql += conditionBuilder.toString();
+        Query<Item> query = session.createQuery(hql, Item.class);
+
+        for (int i = 0; i < keywords.length; i++) {
+            query.setParameter("keyword" + i, "%" + keywords[i] + "%");
+        }
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Item> selectRecommendByType(String itemType) {
+        String sql = "SELECT * FROM item WHERE item_type = :itemType ORDER BY RAND() LIMIT 3";
+        Query<Item> nativeQuery = session.createNativeQuery(sql, Item.class);
+        nativeQuery.setParameter("itemType", itemType);
+        return nativeQuery.getResultList();
+    }
+
+    @Override
     public Integer addItemModel(ItemModel itemModel) {
         session.persist(itemModel);
         return itemModel.getItemModelId();

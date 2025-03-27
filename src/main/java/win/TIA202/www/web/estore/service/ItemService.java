@@ -1,9 +1,6 @@
 package win.TIA202.www.web.estore.service;
 
-import win.TIA202.www.web.estore.entity.Item;
-import win.TIA202.www.web.estore.entity.ItemFromAdminEdit;
-import win.TIA202.www.web.estore.entity.ItemInfo;
-import win.TIA202.www.web.estore.entity.ItemModel;
+import win.TIA202.www.web.estore.entity.*;
 
 import java.util.List;
 
@@ -14,6 +11,12 @@ public interface ItemService {
     Integer pickPriceById(Integer id);
 
     List<Item> showAll();
+
+    PageResponse<Item> showOnOnePage(Integer page, Integer pageSize);
+
+    List<Item> searchItem(String keyword);
+
+    List<Item> showRecommend(String itemType);
 
     List<Item> showAllWithModelName();
 
