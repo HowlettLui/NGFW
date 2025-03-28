@@ -6,4 +6,6 @@ import win.TIA202.www.web.team.entity.Game;
 
 public interface GameDao {
     public List<Game> selectAll();
+
+    public Game selectById(int id);
 }

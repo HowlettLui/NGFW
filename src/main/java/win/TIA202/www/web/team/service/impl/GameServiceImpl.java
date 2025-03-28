@@ -42,4 +42,9 @@ public class GameServiceImpl implements GameService{
         });
         return events;
     }
+
+    @Override
+    public Game getGameById(int id) {
+        return dao.selectById(id);
+    }
 }

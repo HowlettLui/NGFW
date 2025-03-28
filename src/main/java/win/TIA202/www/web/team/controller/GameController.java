@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import win.TIA202.www.web.team.service.GameService;
 
@@ -23,5 +25,10 @@ public class GameController {
     @GetMapping("events")
     public List<?> events(){
         return svc.getEventList();
+    }
+
+    @GetMapping("byId")
+    public Object gameById(@RequestParam("id") int id){
+        return svc.getGameById(id);
     }
 }

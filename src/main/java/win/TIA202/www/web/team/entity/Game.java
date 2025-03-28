@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,10 +41,11 @@ public class Game {
     private Team awayTeam;
     
     @Column(name = "game_num")
-    private String gameNo;
+    private int gameNo;
     
     @Column(name = "game_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Taipei")
     private Date gameDate;
     
     @Column(name = "game_location")

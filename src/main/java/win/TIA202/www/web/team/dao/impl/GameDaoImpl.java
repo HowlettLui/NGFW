@@ -23,4 +23,12 @@ public class GameDaoImpl implements GameDao {
         return session.createQuery(hql, Game.class).getResultList();
     }
 
+    @Override
+    public Game selectById(int gameNo) {
+        final String hql = "FROM Game g WHERE g.gameNo = :gameNo";
+        return session.createQuery(hql, Game.class)
+                .setParameter("gameNo", gameNo)
+                .uniqueResult();
+    }
+
 }
