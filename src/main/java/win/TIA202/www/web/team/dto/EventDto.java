@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDto {
-    private String title;
+    private int title;
     private Date start;
     private EventExtendedPropsDto extendedProps;
 }

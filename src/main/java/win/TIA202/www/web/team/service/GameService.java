@@ -9,4 +9,6 @@ public interface GameService {
     public List<Game> getGameList();
 
     public List<EventDto> getEventList();
+
+    public Game getGameById(int id);
 }
