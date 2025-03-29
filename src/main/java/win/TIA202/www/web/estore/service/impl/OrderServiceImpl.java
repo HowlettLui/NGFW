@@ -40,6 +40,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order ecpay(Order order) throws UnsupportedEncodingException {
         List<Receipt> receipts = order.getReceipts();
+        Integer userId = order.getUserId();
+        String targetUrl = "https://www.tia202g1.win/estore/ordersecpay.html?userId=" + userId.toString();
+//        String targetUrl = "http://localhost:8080/NGFW/estore/ordersecpay.html?userId=" + userId.toString();
         orderDao.insertOrder(order);
         if (order.getOrderId() != null) {
             // 新增訂單以及訂單明細資訊
@@ -75,8 +78,8 @@ public class OrderServiceImpl implements OrderService {
                 aioCheckOutALL.setTotalAmount(order.getOrderTotalPrice().toString());
                 aioCheckOutALL.setTradeDesc("NGFW商城支付");
                 aioCheckOutALL.setItemName(order.getOrderDescription());
-                aioCheckOutALL.setClientBackURL("https://www.tia202g1.win/estore/shop.html");
-                aioCheckOutALL.setReturnURL("https://www.tia202g1.win/estore/shop.html");
+                aioCheckOutALL.setClientBackURL(targetUrl);
+                aioCheckOutALL.setReturnURL(targetUrl);
                 aioCheckOutALL.setNeedExtraPaidInfo("N");
 
                 try {
