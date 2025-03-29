@@ -108,7 +108,7 @@ public class articleAddController{
 ////		resp.getWriter().write(respBody.toString());
 		
 //		return respBody;
-		return new RedirectView("newsf/news_fmgr.html");
+		return new RedirectView("/newsf/news_fmgr.html");
 	}
 	
 //	@Override

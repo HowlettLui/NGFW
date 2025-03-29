@@ -90,7 +90,7 @@ public class articleEditController{
 		respBody.put("successfully", errMsg == null);
 		respBody.put("errMsg", errMsg);
 		
-		return new RedirectView("newsf/news_fmgr.html");
+		return new RedirectView("/newsf/news_fmgr.html");
 
 //		return respBody;
 	}
