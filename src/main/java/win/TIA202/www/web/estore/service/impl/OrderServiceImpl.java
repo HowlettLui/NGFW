@@ -75,9 +75,8 @@ public class OrderServiceImpl implements OrderService {
                 aioCheckOutALL.setTotalAmount(order.getOrderTotalPrice().toString());
                 aioCheckOutALL.setTradeDesc("NGFW商城支付");
                 aioCheckOutALL.setItemName(order.getOrderDescription());
-                aioCheckOutALL.setClientBackURL("http://localhost:8080/NGFW/estore/orders.html");  // todo: 確認OK之後，記得改成https
-                // aioCheckOutALL.setOrderResultURL("http://localhost:8080/NGFW/estore/orders.html");  // todo: 確認OK之後，記得改成https
-                aioCheckOutALL.setReturnURL("http://localhost:8080/NGFW/estore/order/payresult");  // todo: 確認OK之後，記得改成https
+                aioCheckOutALL.setClientBackURL("https://www.tia202g1.win/estore/shop.html");
+                aioCheckOutALL.setReturnURL("https://www.tia202g1.win/estore/shop.html");
                 aioCheckOutALL.setNeedExtraPaidInfo("N");
 
                 try {
