@@ -18,4 +18,6 @@ public interface UserService {
 
 	User editUserSR(User user);
 
+	User selectById(Integer id);
+
 }

@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import win.TIA202.www.web.dao.UserDao;
+import win.TIA202.www.web.entity.Staff;
 import win.TIA202.www.web.entity.User;
 
 @Repository
@@ -23,7 +24,7 @@ public class UserDaoImpl implements UserDao {
 //	public UserDaoImpl() throws NamingException {
 //		ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/NGFW");
 //	}
-	
+
 	@Override
 	public int insert(User user) {
 //		String sql = "insert into `USER`(ACCOUNT, EMAIL, NAME, PASSWORD, PHONE, STATUS, ROLE_ID, OAUTH) values (? ,? ,'SYSTEM' ,? ,'SYSTEM' ,0 ,12 ,? )"; // !!測試暫時使用oauth欄位裝 confirmPassword																																						// !!
@@ -40,14 +41,13 @@ public class UserDaoImpl implements UserDao {
 //			e.printStackTrace();
 //		}
 //		return -1;
-		
+
 		session.persist(user);
-		if(user.getUserId() == null) {
+		if (user.getUserId() == null) {
 			return -1;
 		}
 		return 1;
 	}
-
 
 	@Override
 	public User selectForLogin(String email, String password) {
@@ -80,17 +80,14 @@ public class UserDaoImpl implements UserDao {
 //		return null;
 
 		final String sql = "select * from `USER` where EMAIL = :email and PASSWORD = :password";
-		return session
-				.createNativeQuery(sql, User.class)
-				.setParameter("email", email)
-				.setParameter("password", password)
-				.uniqueResult();
+		return session.createNativeQuery(sql, User.class).setParameter("email", email)
+				.setParameter("password", password).uniqueResult();
 	}
 
 	public User selectById(Integer userId) {
 		return session.get(User.class, userId);
 	}
-	
+
 	@Override
 	public User selectByAccount(String account) {
 //		String sql = "select * from `USER` where ACCOUNT = ?";
@@ -118,80 +115,60 @@ public class UserDaoImpl implements UserDao {
 //			e.printStackTrace();
 //		}
 //		return null;
-		
+
 		CriteriaBuilder cBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<User> cQuery = cBuilder.createQuery(User.class);
 		Root<User> root = cQuery.from(User.class);
 		cQuery.where(cBuilder.equal(root.get("account"), account));
-		return session
-				.createQuery(cQuery)
-				.uniqueResult();
+		return session.createQuery(cQuery).uniqueResult();
 	}
-	
+
 	@Override
-	public User selectByEmail(String email) {		
+	public User selectByEmail(String email) {
 		CriteriaBuilder cBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<User> cQuery = cBuilder.createQuery(User.class);
 		Root<User> root = cQuery.from(User.class);
 		cQuery.where(cBuilder.equal(root.get("email"), email));
-		return session
-				.createQuery(cQuery)
-				.uniqueResult();
+		return session.createQuery(cQuery).uniqueResult();
 	}
 
 	@Override
 	public int update(User user) {
-		final StringBuilder hql = new StringBuilder()
-			.append("UPDATE User SET ");
+		final StringBuilder hql = new StringBuilder().append("UPDATE User SET ");
 		final String password = user.getPassword();
 		if (password != null && !password.isEmpty()) {
 			hql.append("password = :password,");
 		}
-		hql
-			.append("name = :name, ")
-			.append("email = :email, ")
-			.append("phone = :phone ")
-			.append("WHERE userId = :userId");
+		hql.append("name = :name, ").append("email = :email, ").append("phone = :phone ")
+				.append("WHERE userId = :userId");
 
 		Query<?> query = session.createQuery(hql.toString());
 		if (password != null && !password.isEmpty()) {
 			query.setParameter("password", user.getPassword());
 		}
-		
-		return query
-				.setParameter("userId", user.getUserId())
-				.setParameter("name", user.getName())
-				.setParameter("email", user.getEmail())
-				.setParameter("phone", user.getPhone())
-				.executeUpdate();
+
+		return query.setParameter("userId", user.getUserId()).setParameter("name", user.getName())
+				.setParameter("email", user.getEmail()).setParameter("phone", user.getPhone()).executeUpdate();
 	}
-	
+
 	@Override
 	public int updatePassword(User user) {
 		final String hql = "UPDATE User SET password = :password WHERE userId = :userId";
 		Query<?> query = session.createQuery(hql);
-		return query
-				.setParameter("userId", user.getUserId())
-				.setParameter("password", user.getPassword())
+		return query.setParameter("userId", user.getUserId()).setParameter("password", user.getPassword())
 				.executeUpdate();
 	}
-	
+
 	public List<User> selectAll() {
 		final String hql = "FROM User ORDER BY userId";
-		return session
-				.createQuery(hql, User.class)
-				.getResultList();
+		return session.createQuery(hql, User.class).getResultList();
 	}
-
 
 	@Override
 	public List<User> selectAllUser() {
 		final String hql = "FROM User ORDER BY user_id";
-		return session
-				.createQuery(hql, User.class)
-				.getResultList();
+		return session.createQuery(hql, User.class).getResultList();
 	}
-
 
 	@Override
 	public User updateUserSR(User user) {
@@ -199,5 +176,13 @@ public class UserDaoImpl implements UserDao {
 		oUser.setRoleId(user.getRoleId());
 		oUser.setStatus(user.getStatus());
 		return (User) session.merge(oUser);
+	}
+
+	@Override
+	public User selectUserById(Integer id) {
+		final String hql = "FROM User WHERE userId = :user_id";
+		return session.createQuery(hql, User.class)
+				.setParameter("user_id", id)
+				.uniqueResult();
 	}
 }

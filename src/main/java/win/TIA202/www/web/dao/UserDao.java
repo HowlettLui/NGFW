@@ -22,6 +22,8 @@ public interface UserDao {
 
 	List<User> selectAllUser();
 
-	User updateUserSR(User user); 
+	User updateUserSR(User user);
+
+	User selectUserById(Integer id); 
 	
 }

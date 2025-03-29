@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 			return user;
 		}
 		
-		user.setRoleId(13);
+		user.setRoleId(8);	// 改roleId
 		user.setStatus(0);
 		int resultCount = userDao.insert(user);
 		if(resultCount < 0) {
@@ -147,5 +147,10 @@ public class UserServiceImpl implements UserService {
 			user.setMessage("修改失敗");
 			return user;
 		}
+	}
+
+	@Override
+	public User selectById(Integer id) {
+		return userDao.selectUserById(id);
 	}
 }

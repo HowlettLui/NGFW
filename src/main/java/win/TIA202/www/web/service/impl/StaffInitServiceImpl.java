@@ -33,7 +33,7 @@ public class StaffInitServiceImpl implements StaffInitService {
 			return "密碼長度需介於 6 ~ 12 之間";
 		}
 
-		staff.setStaffRoleId(12);
+		staff.setStaffRoleId(7);	// 改roleId
 		int resultConut = staffInitDao.staffInitInsert(staff);
 		
 		return resultConut > 0 ? null : "發生錯誤，請聯絡業務主管";
