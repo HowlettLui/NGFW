@@ -45,10 +45,8 @@ public class articleUserMgController {
 	private ArticleService service;
 	
 	@GetMapping
-	public List<Article> indexList(){
-		int uid = 6;
+	public List<Article> indexList(@RequestParam(name = "uId") Integer uid){
 		return service.userMgrList(uid);
-
 	}
 	
 //	@GetMapping

@@ -49,7 +49,5 @@ public class articleViewController {
 		
 		return service.findIndex(articleId);
 	}
-	
-
-	
+		
 }

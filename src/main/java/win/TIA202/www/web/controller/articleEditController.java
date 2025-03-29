@@ -64,7 +64,8 @@ public class articleEditController{
 			@RequestParam("subtitle") String subTitle,
 			@RequestParam("summernote") String content,
 			@RequestParam("publishDate") String pDate,
-			@RequestParam("status") String status
+			@RequestParam("status") String status,
+			@RequestParam("uId") Integer userId
 			) {
 		
 		
@@ -80,6 +81,7 @@ public class articleEditController{
 		article.setContent(content);
 		article.setPublishDate(publishDate);
 		article.setStatus(status);
+		article.setUserId(userId);
 		
 		String errMsg = service.update(article);
 		
@@ -88,7 +90,6 @@ public class articleEditController{
 		respBody.put("successfully", errMsg == null);
 		respBody.put("errMsg", errMsg);
 		
-//		return new RedirectView("newsf/news_fedit.html?articleId="+articleId);
 		return new RedirectView("newsf/news_fmgr.html");
 
 //		return respBody;

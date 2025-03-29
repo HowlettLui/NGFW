@@ -68,7 +68,8 @@ public class articleAddController{
 			@RequestParam("subtitle") String subTitle,
 			@RequestParam("summernote") String content,
 			@RequestParam("publishDate") String pDate,
-			@RequestParam("status") String status
+			@RequestParam("status") String status,
+			@RequestParam("uId") Integer userId
 			) {
 		
 		
@@ -92,6 +93,7 @@ public class articleAddController{
 		article.setContent(content);
 		article.setPublishDate(publishDate);
 		article.setStatus(status);
+		article.setUserId(userId);
 		
 		String errMsg = service.add(article);
 		

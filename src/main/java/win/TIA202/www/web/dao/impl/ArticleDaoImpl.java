@@ -31,24 +31,24 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public int add(Article article) {
 		
-		String hql = "INSERT INTO Article(userId, staffId, newsPhoto, mainTitle, subTitle, content, publishDate, status, articleType) " +
-				"SELECT :userId, :staffId, :newsPhoto, :mainTitle, :subTitle, :content, :publishDate, :status, :articleType " +
-				"FROM Article WHERE articleId = 23";
-
-		Query query = session.createQuery(hql);
-		query.setParameter("userId", article.getUserId());
-		query.setParameter("staffId", article.getStaffId());
-		query.setParameter("newsPhoto", article.getNewsPhoto());
-		query.setParameter("mainTitle", article.getMainTitle());
-		query.setParameter("subTitle", article.getSubTitle());
-		query.setParameter("content", article.getContent());
-		query.setParameter("publishDate", article.getPublishDate());
-		query.setParameter("status", article.getStatus());
-		query.setParameter("articleType", article.getArticleType());
-		return query.executeUpdate();
+//		String hql = "INSERT INTO Article(userId, staffId, newsPhoto, mainTitle, subTitle, content, publishDate, status, articleType) " +
+//				"SELECT :userId, :staffId, :newsPhoto, :mainTitle, :subTitle, :content, :publishDate, :status, :articleType " +
+//				"FROM Article WHERE articleId = 23";
+//
+//		Query query = session.createQuery(hql);
+//		query.setParameter("userId", article.getUserId());
+//		query.setParameter("staffId", article.getStaffId());
+//		query.setParameter("newsPhoto", article.getNewsPhoto());
+//		query.setParameter("mainTitle", article.getMainTitle());
+//		query.setParameter("subTitle", article.getSubTitle());
+//		query.setParameter("content", article.getContent());
+//		query.setParameter("publishDate", article.getPublishDate());
+//		query.setParameter("status", article.getStatus());
+//		query.setParameter("articleType", article.getArticleType());
+//		return query.executeUpdate();
 		
-//		session.persist(article);
-//		return article.getArticleId();
+		session.persist(article);
+		return article.getArticleId();
 		
 //		String sql = "insert into article (user_id,staff_id,news_photo,maintitle,subtitle,content,publish_date,status,article_type) value(?,?,?,?,?,?,?,?,?)";
 //		try (
@@ -113,14 +113,18 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public int update(Article article) {
-		String hql = "UPDATE Article SET userId = :userId, staffId = :staffId, newsPhoto = :newsPhoto,"
+//		String hql = "UPDATE Article SET userId = :userId, staffId = :staffId, newsPhoto = :newsPhoto,"
+//				+ "mainTitle = :mainTitle, subTitle = :subTitle, content = :content, publishDate = :publishDate,"
+//				+ "status = :status, articleType = :articleType "
+//				+ "WHERE article_id = :article_id";
+		String hql = "UPDATE Article SET userId = :userId, newsPhoto = :newsPhoto,"
 				+ "mainTitle = :mainTitle, subTitle = :subTitle, content = :content, publishDate = :publishDate,"
 				+ "status = :status, articleType = :articleType "
 				+ "WHERE article_id = :article_id";
 
 		Query query = session.createQuery(hql);
 		query.setParameter("userId", article.getUserId());
-		query.setParameter("staffId", article.getStaffId());
+//		query.setParameter("staffId", article.getStaffId());
 		query.setParameter("newsPhoto", article.getNewsPhoto());
 		query.setParameter("mainTitle", article.getMainTitle());
 		query.setParameter("subTitle", article.getSubTitle());
