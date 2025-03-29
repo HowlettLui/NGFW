@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import win.TIA202.www.web.team.service.GameEventService;
 import win.TIA202.www.web.team.service.GameService;
 
 @RestController
@@ -16,6 +16,9 @@ import win.TIA202.www.web.team.service.GameService;
 public class GameController {
     @Autowired
     private GameService svc;
+
+    @Autowired
+    private GameEventService gameEventService;
 
     @GetMapping("list")
     public List<?> gameList(){
@@ -30,5 +33,10 @@ public class GameController {
     @GetMapping("byId")
     public Object gameById(@RequestParam("id") int id){
         return svc.getGameById(id);
+    }
+
+    @GetMapping("eventsByGameId")
+    public List<?> eventsByGameId(@RequestParam("id") int gameId){
+        return gameEventService.getGameEventListByGameId(gameId);
     }
 }
