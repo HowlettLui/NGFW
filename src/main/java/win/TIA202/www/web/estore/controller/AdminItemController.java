@@ -9,12 +9,14 @@ import org.springframework.web.multipart.MultipartFile;
 import win.TIA202.www.web.estore.entity.*;
 import win.TIA202.www.web.estore.service.ItemService;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -39,17 +41,19 @@ public class AdminItemController {
     @PostMapping("upload")
     public ObjectNode uploadPhotos(@RequestParam("item_photo") MultipartFile[] files) throws IOException {
 
-        JsonNodeFactory factory = JsonNodeFactory.instance;
-        ObjectNode objectNode = factory.objectNode();
         String fileName = UUID.randomUUID().toString() + "." + files[0].getContentType().split("/")[1]; // todo: 之後再加時間戳
-        String photoSaveLocation = Paths.get(fileRootPath, fileName).toString(); // todo: 需要再確認這樣是否可以存到雲端的指定資料夾位置
-        File file = new File(photoSaveLocation);
-        file.setReadable(true, false);
-        try (OutputStream outputStream = new FileOutputStream(file)) {
-            outputStream.write(files[0].getBytes());
+//        String photoSaveLocation = Paths.get(fileRootPath, fileName).toString(); // 確認這樣可以存到雲端的指定資料夾位置
+        Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r--r--");  // set file permissions on Linux
+        try (InputStream inputStream = files[0].getInputStream()) {
+            Files.copy(inputStream, Paths.get(fileRootPath, fileName));
+            Files.setPosixFilePermissions(Paths.get(fileRootPath, fileName), perms);  // only in Linux
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        String photoLocation = "https://www.tia202g1.win/files/" + fileName; // todo: 確認前端可以叫出該位置檔案的路徑名稱 ("https://www.tia202g1.win/files/123.jpg")
+        JsonNodeFactory factory = JsonNodeFactory.instance;
+        ObjectNode objectNode = factory.objectNode();
+        String photoLocation = "https://www.tia202g1.win/files/" + fileName; // 確認前端可以叫出該位置檔案的路徑名稱 ("https://www.tia202g1.win/files/fileName.jpg")
         objectNode.put("photoLocation", photoLocation);
 
         return objectNode;

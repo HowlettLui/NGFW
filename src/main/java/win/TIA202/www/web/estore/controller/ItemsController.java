@@ -21,7 +21,7 @@ public class ItemsController {
     }
 
     @GetMapping("items")
-    public PageResponse<Item> getItemsByPage(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "9") Integer pageSize) {
+    public PageResponse<Item> getItemsByPage(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "6") Integer pageSize) {
         return service.showOnOnePage(page, pageSize);
     }
 
