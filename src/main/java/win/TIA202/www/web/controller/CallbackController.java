@@ -23,15 +23,15 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 @WebServlet("/callback")
 public class CallbackController extends AbstractAuthorizationCodeCallbackServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String CLIENT_ID = "";
-    private static final String CLIENT_SECRET = "";
+//	private static final String CLIENT_ID = "";
+//    private static final String CLIENT_SECRET = "";
     private static final java.io.File DATA_STORE_DIR = new java.io.File("credentials");
     private static final DataStoreFactory DATA_STORE_FACTORY;
 
     static {
         try {
             DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
-        } catch (IOException e) {
+        } catch (IOException e){
             throw new RuntimeException(e);
         }
     }
@@ -39,7 +39,7 @@ public class CallbackController extends AbstractAuthorizationCodeCallbackServlet
     @Override
     protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential) throws ServletException, IOException {
         req.getSession().setAttribute("credential", credential);
-        resp.sendRedirect("http://localhost:8080/NGFW/login.html");
+        resp.sendRedirect("http://www.tia202g1.win/NGFW/login.html");
     }
 
     @Override
