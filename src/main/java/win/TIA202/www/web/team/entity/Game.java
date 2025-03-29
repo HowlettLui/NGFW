@@ -23,7 +23,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "game")
 @Setter
-@Getter  
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Game {
