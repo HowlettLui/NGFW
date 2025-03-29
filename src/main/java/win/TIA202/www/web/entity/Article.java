@@ -54,7 +54,7 @@ public class Article extends CoreMsg {
 
 //	預設建構子
 	public Article() {
-		this.userId = 6;
+//		this.userId = 6;
 		this.staffId = 1;
 	}
 	

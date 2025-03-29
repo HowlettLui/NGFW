@@ -46,8 +46,6 @@ public class articleStaffMgController {
 	
 	@GetMapping
 	public List<Article> indexList(String status){
-//		int uid = 6;
-//		return service.findAllReview();
 		
 		if(status == null) {
 			return service.findAllReview();

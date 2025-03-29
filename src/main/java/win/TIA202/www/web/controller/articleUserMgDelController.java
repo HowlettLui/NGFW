@@ -48,8 +48,7 @@ public class articleUserMgDelController {
 	private ArticleService service;
 	
 	@GetMapping
-	public Integer userArticleDel(Integer articleId){
-		int uid = 6;
+	public Integer userArticleDel(@RequestParam(name = "uId") Integer uid,@RequestParam(name = "articleId") Integer articleId){
 		return service.userMgrDel(uid,articleId);
 	}
 }
