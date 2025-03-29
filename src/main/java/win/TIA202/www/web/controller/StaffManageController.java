@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import win.TIA202.www.web.entity.Staff;
 import win.TIA202.www.web.service.StaffInitService;
@@ -39,11 +38,19 @@ public class StaffManageController {
         return staff;
     }
 	
+//	@PutMapping("staff_manage")
+//	public Staff editStaffInfo(@RequestBody Staff reqStaff, @SessionAttribute("staff") Staff seStaff) {
+//		final Integer staffId = seStaff.getStaffId();
+//		reqStaff.setStaffId(staffId);
+//		return service.editStaff(reqStaff);
+//	}
+	
 	@PutMapping("staff_manage")
-	public Staff editStaffInfo(@RequestBody Staff reqStaff, @SessionAttribute("staff") Staff seStaff) {
-		final Integer staffId = seStaff.getStaffId();
-		reqStaff.setStaffId(staffId);
-		return service.editStaff(reqStaff);
+	public Staff editStaffInfo(@RequestBody Staff reqStaff) {
+		Staff newStaff = service.editStaff(reqStaff);
+		newStaff.setSuccessfully(true);
+		newStaff.setMessage("更新成功");
+		return service.editStaff(newStaff);
 	}
 	
 	@PutMapping("manage")

@@ -69,8 +69,9 @@ public class StaffInitDaoImpl implements StaffInitDao {
 			.append("UPDATE Staff SET ");
 		final String password = staff.getStaffPassword();
 		if (password != null && !password.isEmpty()) {
-			hql.append("staffPassword = :password,");
+			hql.append("staffPassword = :password, ");
 		}
+		System.out.println(staff.getStaffRoleId());
 		hql
 			.append("staffName = :staffName, ")
 			.append("staffEmail = :staffEmail, ")
@@ -78,19 +79,21 @@ public class StaffInitDaoImpl implements StaffInitDao {
 			.append("staffStatus = :staffStatus, ")
 			.append("staffRoleId = :staffRoleId ")
 			.append("WHERE staffId = :staffId");
+//		final String hql = "UPDATE Staff SET staffName = :staffName, staffEmail = :staffEmail, staffPhone = :staffPhone, staffStatus = :staffStatus, staffRoleId = :staffRoleId WHERE staffId = :staffId";
 
 		Query<?> query = session.createQuery(hql.toString());
 		if (password != null && !password.isEmpty()) {
 			query.setParameter("password", staff.getStaffPassword());
 		}
 			
+		System.out.println(staff.getStaffRoleId());
 		return query
 				.setParameter("staffId", staff.getStaffId())
 				.setParameter("staffName", staff.getStaffName())
 				.setParameter("staffEmail", staff.getStaffEmail())
 				.setParameter("staffPhone", staff.getStaffPhone())
 				.setParameter("staffStatus", staff.getStaffStatus())
-				.setParameter("staffRoleId", staff.getStaffRole())
+				.setParameter("staffRoleId", staff.getStaffRoleId())
 				.executeUpdate();
 	}
 
