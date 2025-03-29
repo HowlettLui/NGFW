@@ -76,7 +76,7 @@ public class articleStaffReviewController{
 		respBody.put("successfully", errMsg == null);
 		respBody.put("errMsg", errMsg);
 		
-		return new RedirectView("newsb/news_bmgrlist.html");
+		return new RedirectView("/newsb/news_bmgrlist.html");
 
 	}
 	
