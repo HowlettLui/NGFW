@@ -74,7 +74,8 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public List<Article> selectAll() {
-		String hql = "from Article where status = 1 order by publishDate desc";
+		String hql = "from Article where status = 1 AND DATE(publishDate) <= CURDATE() order by publishDate desc";
+//		String hql = "from Article where status = 1 order by publishDate desc";
 //		String hql = "from Article where status = :status;
 		Query<Article> query = session.createQuery(hql, Article.class);
 //		query.setParameter("status", 1);
@@ -86,7 +87,8 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public List<Article> categoryArticle(String articleType) {
 //		String hql = "from Article where status = 1 AND articleType = :articleType";
-		String hql = "from Article where status = 1 AND articleType = :articleType order by publishDate desc";
+//		String hql = "from Article where status = 1 AND articleType = :articleType order by publishDate desc";
+		String hql = "from Article where status = 1 AND articleType = :articleType AND DATE(publishDate) <= CURDATE() order by publishDate desc";
 		Query<Article> query = session.createQuery(hql, Article.class);
 		query.setParameter("articleType", articleType);
 		return query.getResultList();
