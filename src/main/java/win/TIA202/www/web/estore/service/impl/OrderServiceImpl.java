@@ -68,14 +68,12 @@ public class OrderServiceImpl implements OrderService {
             // 選擇線上付款、貨到付款或者錯誤
             if (order.getOrderPayment() == 0) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                SimpleDateFormat sdf2 = new SimpleDateFormat("yyMMddHHmmss");
                 String orderDate = sdf.format(new Date());
-                String orderDateForTradeNo = sdf2.format(new Date());
 
                 AllInOne allInOne = new AllInOne("");
 
                 AioCheckOutALL aioCheckOutALL = new AioCheckOutALL();
-                aioCheckOutALL.setMerchantTradeNo("d" + orderDateForTradeNo + "oId" + order.getOrderId().toString());   // 加上訂單成立日期
+                aioCheckOutALL.setMerchantTradeNo("uId" + order.getUserId().toString() + "oId" + order.getOrderId().toString());   // 加上訂單成立日期
                 aioCheckOutALL.setMerchantTradeDate(orderDate);
                 aioCheckOutALL.setTotalAmount(order.getOrderTotalPrice().toString());
                 aioCheckOutALL.setTradeDesc("NGFW商城支付");
@@ -146,9 +144,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String ecpayCheck(Integer orderId) throws UnsupportedEncodingException {
+        String orderUserId = orderDao.selectOrderUserIdByOrderId(orderId);
         AllInOne allInOne = new AllInOne("");
         QueryTradeInfoObj obj = new QueryTradeInfoObj();
-        obj.setMerchantTradeNo("orderId" + orderId.toString());
+        obj.setMerchantTradeNo("uId" + orderUserId + "oId" + orderId.toString());
         return allInOne.queryTradeInfo(obj);
     }
 

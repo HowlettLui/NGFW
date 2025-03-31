@@ -29,6 +29,14 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public String selectOrderUserIdByOrderId(Integer orderId) {
+        String hql = "SELECT o.userId FROM Order o WHERE o.orderId = :orderId";
+        Query<Integer> query = session.createQuery(hql, Integer.class);
+        query.setParameter("orderId", orderId);
+        return query.uniqueResult().toString();
+    }
+
+    @Override
     public Integer updateOrderStatus(Integer orderId, Integer orderStatus) {
         String hql = "UPDATE Order SET orderStatus = :orderStatus where orderId = :orderId";
         return session.createQuery(hql)

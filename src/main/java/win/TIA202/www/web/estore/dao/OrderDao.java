@@ -10,6 +10,8 @@ public interface OrderDao {
 
     List<Order> selectOrdersByUserId(Integer userId);
 
+    String selectOrderUserIdByOrderId(Integer orderId);
+
     Integer updateOrderStatus(Integer orderId, Integer orderStatus);
 
     List<Order> selectAllOrders();
